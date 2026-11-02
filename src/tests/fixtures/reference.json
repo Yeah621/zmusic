@@ -1,0 +1,470 @@
+{
+ "T": [
+  {
+   "t": "Neon Mint",
+   "a": "Zara Lune",
+   "g": "Electronic",
+   "h": 165,
+   "b": 118,
+   "d": 204,
+   "i": 0
+  },
+  {
+   "t": "Hujan di Jakarta",
+   "a": "Raya & Senja",
+   "g": "Lo-fi",
+   "h": 210,
+   "b": 78,
+   "d": 187,
+   "i": 1
+  },
+  {
+   "t": "Aurora Kita",
+   "a": "Nadin Skye",
+   "g": "Pop",
+   "h": 290,
+   "b": 104,
+   "d": 221,
+   "i": 2
+  },
+  {
+   "t": "Midnight Drive",
+   "a": "KAIRO",
+   "g": "Electronic",
+   "h": 250,
+   "b": 124,
+   "d": 198,
+   "i": 3
+  },
+  {
+   "t": "Kopi & Kamu",
+   "a": "Bumi Akustik",
+   "g": "Akustik",
+   "h": 30,
+   "b": 86,
+   "d": 176,
+   "i": 4
+  },
+  {
+   "t": "Gelombang",
+   "a": "Oshi",
+   "g": "Hip-hop",
+   "h": 340,
+   "b": 92,
+   "d": 195,
+   "i": 5
+  },
+  {
+   "t": "Fajar Pertama",
+   "a": "Lintang",
+   "g": "Akustik",
+   "h": 50,
+   "b": 72,
+   "d": 214,
+   "i": 6
+  },
+  {
+   "t": "Pixel Rain",
+   "a": "Zara Lune",
+   "g": "Lo-fi",
+   "h": 185,
+   "b": 80,
+   "d": 169,
+   "i": 7
+  },
+  {
+   "t": "Satu Semesta",
+   "a": "Nadin Skye",
+   "g": "Pop",
+   "h": 320,
+   "b": 110,
+   "d": 208,
+   "i": 8
+  },
+  {
+   "t": "Bass Garden",
+   "a": "KAIRO",
+   "g": "Hip-hop",
+   "h": 140,
+   "b": 96,
+   "d": 183,
+   "i": 9
+  },
+  {
+   "t": "Neon Rooftop",
+   "a": "Zara Lune",
+   "g": "Electronic",
+   "h": 175,
+   "b": 122,
+   "d": 192,
+   "i": 10
+  },
+  {
+   "t": "Teduh",
+   "a": "Raya & Senja",
+   "g": "Lo-fi",
+   "h": 220,
+   "b": 74,
+   "d": 201,
+   "i": 11
+  },
+  {
+   "t": "Langit Biru",
+   "a": "Nadin Skye",
+   "g": "Pop",
+   "h": 270,
+   "b": 100,
+   "d": 189,
+   "i": 12
+  },
+  {
+   "t": "Turbo",
+   "a": "KAIRO",
+   "g": "Electronic",
+   "h": 260,
+   "b": 128,
+   "d": 178,
+   "i": 13
+  }
+ ],
+ "AL": [
+  {
+   "n": "Neon Mint",
+   "a": "Zara Lune",
+   "y": 2025,
+   "h": 165,
+   "t": [
+    0,
+    7,
+    10
+   ]
+  },
+  {
+   "n": "Senja di Kota",
+   "a": "Raya & Senja",
+   "y": 2024,
+   "h": 210,
+   "t": [
+    1,
+    11
+   ]
+  },
+  {
+   "n": "Aurora",
+   "a": "Nadin Skye",
+   "y": 2025,
+   "h": 290,
+   "t": [
+    2,
+    8,
+    12
+   ]
+  },
+  {
+   "n": "Midnight Drive",
+   "a": "KAIRO",
+   "y": 2026,
+   "h": 250,
+   "t": [
+    3,
+    9,
+    13
+   ]
+  },
+  {
+   "n": "Akustik Pagi",
+   "a": "Bumi Akustik",
+   "y": 2023,
+   "h": 30,
+   "t": [
+    4
+   ]
+  },
+  {
+   "n": "Gelombang",
+   "a": "Oshi",
+   "y": 2025,
+   "h": 340,
+   "t": [
+    5
+   ]
+  },
+  {
+   "n": "Fajar",
+   "a": "Lintang",
+   "y": 2024,
+   "h": 50,
+   "t": [
+    6
+   ]
+  }
+ ],
+ "A": [
+  {
+   "n": "Zara Lune",
+   "h": 165,
+   "f": 96,
+   "g": "Electronic"
+  },
+  {
+   "n": "Raya & Senja",
+   "h": 210,
+   "f": 27,
+   "g": "Lo-fi"
+  },
+  {
+   "n": "Nadin Skye",
+   "h": 290,
+   "f": 43,
+   "g": "Pop"
+  },
+  {
+   "n": "KAIRO",
+   "h": 250,
+   "f": 38,
+   "g": "Electronic"
+  },
+  {
+   "n": "Bumi Akustik",
+   "h": 30,
+   "f": 27,
+   "g": "Akustik"
+  },
+  {
+   "n": "Oshi",
+   "h": 340,
+   "f": 91,
+   "g": "Hip-hop"
+  },
+  {
+   "n": "Lintang",
+   "h": 50,
+   "f": 22,
+   "g": "Akustik"
+  }
+ ],
+ "PB": [
+  {
+   "n": "Chill Mint",
+   "g": "Lo-fi",
+   "h": 165
+  },
+  {
+   "n": "Fokus Kerja",
+   "g": "Akustik",
+   "h": 45
+  },
+  {
+   "n": "Gym Boost",
+   "g": "Hip-hop",
+   "h": 340
+  },
+  {
+   "n": "Late Night",
+   "g": "Electronic",
+   "h": 250
+  },
+  {
+   "n": "Pop Hari Ini",
+   "g": "Pop",
+   "h": 300
+  },
+  {
+   "n": "Santai Sore",
+   "g": "Akustik",
+   "h": 25
+  }
+ ],
+ "TL": [
+  [
+   "Pop",
+   "pop",
+   320
+  ],
+  [
+   "Santai",
+   "lo-fi",
+   200
+  ],
+  [
+   "Elektronik",
+   "electronic",
+   250
+  ],
+  [
+   "Hip-hop",
+   "hip-hop",
+   345
+  ],
+  [
+   "Akustik",
+   "akustik",
+   40
+  ],
+  [
+   "Malam",
+   "midnight",
+   270
+  ]
+ ],
+ "G": [
+  "Semua",
+  "Pop",
+  "Lo-fi",
+  "Electronic",
+  "Hip-hop",
+  "Akustik"
+ ],
+ "genArt": [
+  {
+   "h": 13,
+   "s": 0,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(13%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(78%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2268%22%20cy%3D%2234%22%20r%3D%2224%22%20fill%3D%22hsl(38%2C95%25%2C80%25)%22%20opacity%3D%22.9%22%2F%3E%3Ccircle%20cx%3D%2226%22%20cy%3D%2276%22%20r%3D%2234%22%20fill%3D%22hsl(13%2C82%25%2C52%25)%22%20opacity%3D%22.65%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 60,
+   "s": 1,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(60%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(125%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20x%3D%22-10%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(60%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2214%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(85%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2238%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(60%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(85%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2286%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(60%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 107,
+   "s": 2,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(107%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(172%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2244%22%20fill%3D%22none%22%20stroke%3D%22hsl(132%2C95%25%2C80%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2232%22%20fill%3D%22none%22%20stroke%3D%22hsl(107%2C82%25%2C52%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22hsl(132%2C95%25%2C80%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%228%22%20fill%3D%22none%22%20stroke%3D%22hsl(107%2C82%25%2C52%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 154,
+   "s": 3,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(154%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(219%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M0%2055%20Q25%2035%2050%2055%20T100%2055%20V100%20H0Z%22%20fill%3D%22hsl(179%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20d%3D%22M0%2069%20Q25%2049%2050%2069%20T100%2069%20V100%20H0Z%22%20fill%3D%22hsl(154%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20d%3D%22M0%2083%20Q25%2063%2050%2083%20T100%2083%20V100%20H0Z%22%20fill%3D%22hsl(179%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 201,
+   "s": 4,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(201%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(266%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M50%2012%2088%2080H12Z%22%20fill%3D%22hsl(226%2C95%25%2C80%25)%22%20opacity%3D%22.7%22%2F%3E%3Cpath%20d%3D%22M50%2040%2074%2084H26Z%22%20fill%3D%22hsl(201%2C82%25%2C52%25)%22%20opacity%3D%22.8%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 248,
+   "s": 5,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(248%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(313%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2268%22%20cy%3D%2234%22%20r%3D%2224%22%20fill%3D%22hsl(273%2C95%25%2C80%25)%22%20opacity%3D%22.9%22%2F%3E%3Ccircle%20cx%3D%2226%22%20cy%3D%2276%22%20r%3D%2234%22%20fill%3D%22hsl(248%2C82%25%2C52%25)%22%20opacity%3D%22.65%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 295,
+   "s": 6,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(295%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(0%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20x%3D%22-10%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(295%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2214%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(320%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2238%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(295%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(320%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2286%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(295%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 342,
+   "s": 7,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(342%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(47%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2244%22%20fill%3D%22none%22%20stroke%3D%22hsl(7%2C95%25%2C80%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2232%22%20fill%3D%22none%22%20stroke%3D%22hsl(342%2C82%25%2C52%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22hsl(7%2C95%25%2C80%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%228%22%20fill%3D%22none%22%20stroke%3D%22hsl(342%2C82%25%2C52%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 29,
+   "s": 8,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(29%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(94%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M0%2055%20Q25%2035%2050%2055%20T100%2055%20V100%20H0Z%22%20fill%3D%22hsl(54%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20d%3D%22M0%2069%20Q25%2049%2050%2069%20T100%2069%20V100%20H0Z%22%20fill%3D%22hsl(29%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20d%3D%22M0%2083%20Q25%2063%2050%2083%20T100%2083%20V100%20H0Z%22%20fill%3D%22hsl(54%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 76,
+   "s": 9,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(76%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(141%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M50%2012%2088%2080H12Z%22%20fill%3D%22hsl(101%2C95%25%2C80%25)%22%20opacity%3D%22.7%22%2F%3E%3Cpath%20d%3D%22M50%2040%2074%2084H26Z%22%20fill%3D%22hsl(76%2C82%25%2C52%25)%22%20opacity%3D%22.8%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 123,
+   "s": 10,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(123%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(188%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2268%22%20cy%3D%2234%22%20r%3D%2224%22%20fill%3D%22hsl(148%2C95%25%2C80%25)%22%20opacity%3D%22.9%22%2F%3E%3Ccircle%20cx%3D%2226%22%20cy%3D%2276%22%20r%3D%2234%22%20fill%3D%22hsl(123%2C82%25%2C52%25)%22%20opacity%3D%22.65%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 170,
+   "s": 11,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(170%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(235%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20x%3D%22-10%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(170%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2214%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(195%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2238%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(170%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(195%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2286%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(170%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 217,
+   "s": 12,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(217%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(282%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2244%22%20fill%3D%22none%22%20stroke%3D%22hsl(242%2C95%25%2C80%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2232%22%20fill%3D%22none%22%20stroke%3D%22hsl(217%2C82%25%2C52%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22hsl(242%2C95%25%2C80%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%228%22%20fill%3D%22none%22%20stroke%3D%22hsl(217%2C82%25%2C52%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 264,
+   "s": 13,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(264%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(329%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M0%2055%20Q25%2035%2050%2055%20T100%2055%20V100%20H0Z%22%20fill%3D%22hsl(289%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20d%3D%22M0%2069%20Q25%2049%2050%2069%20T100%2069%20V100%20H0Z%22%20fill%3D%22hsl(264%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20d%3D%22M0%2083%20Q25%2063%2050%2083%20T100%2083%20V100%20H0Z%22%20fill%3D%22hsl(289%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 311,
+   "s": 14,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(311%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(16%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M50%2012%2088%2080H12Z%22%20fill%3D%22hsl(336%2C95%25%2C80%25)%22%20opacity%3D%22.7%22%2F%3E%3Cpath%20d%3D%22M50%2040%2074%2084H26Z%22%20fill%3D%22hsl(311%2C82%25%2C52%25)%22%20opacity%3D%22.8%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 358,
+   "s": 15,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(358%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(63%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2268%22%20cy%3D%2234%22%20r%3D%2224%22%20fill%3D%22hsl(23%2C95%25%2C80%25)%22%20opacity%3D%22.9%22%2F%3E%3Ccircle%20cx%3D%2226%22%20cy%3D%2276%22%20r%3D%2234%22%20fill%3D%22hsl(358%2C82%25%2C52%25)%22%20opacity%3D%22.65%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 45,
+   "s": 16,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(45%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(110%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Crect%20x%3D%22-10%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(45%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2214%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(70%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2238%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(45%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2262%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(70%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3Crect%20x%3D%2286%22%20y%3D%22-20%22%20width%3D%2212%22%20height%3D%22140%22%20fill%3D%22hsl(45%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%20transform%3D%22rotate(25%2050%2050)%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 92,
+   "s": 17,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(92%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(157%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2244%22%20fill%3D%22none%22%20stroke%3D%22hsl(117%2C95%25%2C80%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2232%22%20fill%3D%22none%22%20stroke%3D%22hsl(92%2C82%25%2C52%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22hsl(117%2C95%25%2C80%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%228%22%20fill%3D%22none%22%20stroke%3D%22hsl(92%2C82%25%2C52%25)%22%20stroke-width%3D%225%22%20opacity%3D%22.8%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 139,
+   "s": 18,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(139%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(204%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M0%2055%20Q25%2035%2050%2055%20T100%2055%20V100%20H0Z%22%20fill%3D%22hsl(164%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20d%3D%22M0%2069%20Q25%2049%2050%2069%20T100%2069%20V100%20H0Z%22%20fill%3D%22hsl(139%2C82%25%2C52%25)%22%20opacity%3D%22.5%22%2F%3E%3Cpath%20d%3D%22M0%2083%20Q25%2063%2050%2083%20T100%2083%20V100%20H0Z%22%20fill%3D%22hsl(164%2C95%25%2C80%25)%22%20opacity%3D%22.5%22%2F%3E%3C%2Fsvg%3E')"
+  },
+  {
+   "h": 186,
+   "s": 19,
+   "out": "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22hsl(186%2C82%25%2C52%25)%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22hsl(251%2C72%25%2C24%25)%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22url(%23g)%22%2F%3E%3Cpath%20d%3D%22M50%2012%2088%2080H12Z%22%20fill%3D%22hsl(211%2C95%25%2C80%25)%22%20opacity%3D%22.7%22%2F%3E%3Cpath%20d%3D%22M50%2040%2074%2084H26Z%22%20fill%3D%22hsl(186%2C82%25%2C52%25)%22%20opacity%3D%22.8%22%2F%3E%3C%2Fsvg%3E')"
+  }
+ ],
+ "fmt": [
+  {
+   "v": 0,
+   "out": "0:00"
+  },
+  {
+   "v": 1,
+   "out": "0:01"
+  },
+  {
+   "v": 9,
+   "out": "0:09"
+  },
+  {
+   "v": 59,
+   "out": "0:59"
+  },
+  {
+   "v": 59.9,
+   "out": "0:59"
+  },
+  {
+   "v": 60,
+   "out": "1:00"
+  },
+  {
+   "v": 61,
+   "out": "1:01"
+  },
+  {
+   "v": 125.5,
+   "out": "2:05"
+  },
+  {
+   "v": 204,
+   "out": "3:24"
+  },
+  {
+   "v": 3599,
+   "out": "59:59"
+  },
+  {
+   "v": 3600,
+   "out": "60:00"
+  },
+  {
+   "v": 7325,
+   "out": "122:05"
+  }
+ ]
+}
