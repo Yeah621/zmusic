@@ -14,10 +14,10 @@ export interface VisualRoute {
   ready: boolean; // ubah ke true setelah halaman Next ada
 }
 
-const r = (name: string, html: string, next: string, task: string): VisualRoute => ({ name, html, next, task, ready: false });
+const r = (name: string, html: string, next: string, task: string, ready = false): VisualRoute => ({ name, html, next, task, ready });
 
 export const ROUTES: VisualRoute[] = [
-  r('beranda', '#/', '/', 'P1-03'),
+  r('beranda', '#/', '/', 'P1-03', true),
   r('cari-kosong', '#/search', '/search', 'P1-04'),
   r('cari-hasil', '#/search/lo-fi', '/search/lo-fi', 'P1-04'),
   r('cari-tak-ada', '#/search/zzzz', '/search/zzzz', 'P1-04'),

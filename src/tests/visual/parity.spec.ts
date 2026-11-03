@@ -10,6 +10,7 @@ const pct = (n: number) => `${(n * 100).toFixed(3)}%`;
 
 async function shot(page: Page, url: string): Promise<Buffer> {
   await page.goto(url);
+  await page.waitForLoadState('networkidle'); // tunggu hidrasi (sapaan Beranda dihitung di klien)
   await page.evaluate(async () => {
     await document.fonts.ready;
   });

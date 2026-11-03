@@ -22,7 +22,9 @@ npm run dev
 
 ## Status
 
-Fase 0 (P0-01 … P0-06) selesai; berikutnya P1-01. Halaman `/` sementara hanya uji dasar (tema, font, ikon, cover, data contoh) dan diganti di P1-03.
+Fase 0 (P0-01 … P0-06) selesai. Fase 1: P1-02 (store pemutar), P1-01 (shell, pemutar, Now Playing) dan P1-03 (Beranda) selesai; berikutnya P1-04 (Cari).
+
+Peta kode: `src/stores` (player, ui, library), `src/components/{shell,player,cards,lists,views}`, `src/lib/actions.ts` (aksi + toast). Tampilan tiap halaman ada di `src/components/views/*View.tsx`; `app/**/page.tsx` hanya pembungkus tipis.
 
 ## Aturan Emas untuk AI Agen
 
