@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react';
+
 // P0-05: disalin dari genArt() di reference/zmusic-fixed.html. Logika TIDAK boleh diubah;
 // uji unit membandingkan keluarannya dengan kode asli HTML (src/tests/fixtures/reference.json).
 const AC: Record<string, string> = {};
@@ -9,3 +11,15 @@ else if(k==3)o=[0,1,2].map(i=>`<path d="M0 ${55+i*14} Q25 ${35+i*14} 50 ${55+i*1
 else o=`<path d="M50 12 88 80H12Z" fill="${c3}" opacity=".7"/><path d="M50 40 74 84H26Z" fill="${c1}" opacity=".8"/>`;
 const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><rect width="100" height="100" fill="url(#g)"/>${o}</svg>`;
 return AC[key]="url('data:image/svg+xml,"+encodeURIComponent(svg)+"')"}
+
+/** Padanan cv() di HTML: `i` (indeks lagu) atau `s` (benih) menentukan bentuk cover. */
+export const coverStyle = (x: { h: number; i?: number; s?: number }): CSSProperties => ({
+  backgroundImage: genArt(x.h, x.i != null ? x.i : x.s || 0),
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+});
+
+/** Padanan ab() di HTML: latar gradien avatar dan banner artis. */
+export const artistBg = (h: number): CSSProperties => ({
+  background: `linear-gradient(135deg,hsl(${h} 80% 55%),hsl(${(h + 60) % 360} 70% 28%))`,
+});

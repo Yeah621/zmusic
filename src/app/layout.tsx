@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { IconSprite } from '@/components/icons/IconSprite';
+import { AppShell } from '@/components/shell/AppShell';
 import { THEME_INIT } from '@/lib/theme-init';
 import '@/styles/zmusic.css';
 
@@ -21,8 +22,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
       <body>
+        <a className="skip" href="#vw">
+          Lewati ke konten
+        </a>
         <IconSprite />
-        {children}
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

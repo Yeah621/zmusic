@@ -20,7 +20,8 @@ export function loadReference(file = 'reference/zmusic-fixed.html') {
     cut('/* ---------- DATA ---------- */', '/* ---------- STATE ---------- */'),
     cut('const AC={};', 'const cv=x=>'),
     fmtLine[0],
-    'result={T,AL,A,PB,TL,G,genArt,fmt};',
+    cut('function bars(x)', 'function wave()'),
+    'result={T,AL,A,PB,TL,G,genArt,fmt,bars};',
   ].join('\n');
   const ctx = {};
   runInNewContext(code, ctx);
@@ -28,11 +29,12 @@ export function loadReference(file = 'reference/zmusic-fixed.html') {
 }
 
 function main() {
-  const { T, AL, A, PB, TL, G, genArt, fmt } = loadReference();
+  const { T, AL, A, PB, TL, G, genArt, fmt, bars } = loadReference();
   const pairs = Array.from({ length: 20 }, (_, n) => [(n * 47 + 13) % 360, n]);
   const data = {
     T, AL, A, PB, TL, G,
     genArt: pairs.map(([h, s]) => ({ h, s, out: genArt(h, s) })),
+    waveHeights: [0, 1, 7, 13, 165, 290].map((seed) => ({ seed, heights: [...bars({ i: seed }).matchAll(/height:(\d+)%/g)].map((m) => +m[1]) })),
     fmt: [0, 1, 9, 59, 59.9, 60, 61, 125.5, 204, 3599, 3600, 7325].map((v) => ({ v, out: fmt(v) })),
   };
   mkdirSync('src/tests/fixtures', { recursive: true });
