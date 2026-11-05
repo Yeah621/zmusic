@@ -1,4 +1,4 @@
-import { T, type QuickPlaylist } from '@/data/mock';
+import { A, T, type QuickPlaylist } from '@/data/mock';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
 import { toast } from '@/stores/ui';
@@ -48,4 +48,9 @@ export function setSleepTimer(minutes: number): void {
     toast('Timer tidur selesai');
   }, minutes * 60_000);
   toast(`Timer tidur: ${minutes} menit`);
+}
+
+export function toggleFollowWithToast(k: number): void {
+  const following = useLibraryStore.getState().toggleFollow(k);
+  toast(following ? `Mulai mengikuti ${A[k].n}` : `Berhenti mengikuti ${A[k].n}`);
 }

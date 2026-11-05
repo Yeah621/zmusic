@@ -3,6 +3,7 @@ import { applyTheme, type ThemeMode } from '@/lib/theme';
 
 export type MenuState =
   | { kind: 'track'; index: number; right: number; bottom: number }
+  | { kind: 'addpl'; index: number; right: number; bottom: number }
   | { kind: 'sleep'; right: number; bottom: number };
 export type DialogState = { kind: 'playlist'; track?: number; edit?: number } | { kind: 'profile' };
 export interface ToastState {
@@ -23,7 +24,9 @@ interface UiState {
   /** chip genre Beranda dan jumlah baris Top Chart (bertahan antar halaman seperti di HTML) */
   genre: string;
   chartCount: number;
+  /** pesan terakhir; tetap ada saat disembunyikan agar animasi keluar mulus */
   toast: ToastState | null;
+  toastShown: boolean;
   menu: MenuState | null;
   dialog: DialogState | null;
   setTheme: (m: ThemeMode) => void;
@@ -46,6 +49,7 @@ export const useUiStore = create<UiState>()((set) => ({
   genre: 'Semua',
   chartCount: CHART_INITIAL,
   toast: null,
+  toastShown: false,
   menu: null,
   dialog: null,
   setTheme: (theme) => {
@@ -61,8 +65,8 @@ export const useUiStore = create<UiState>()((set) => ({
   setNpTab: (npTab) => set({ npTab }),
   setGenre: (genre) => set({ genre, chartCount: CHART_INITIAL }),
   moreChart: () => set((s) => ({ chartCount: s.chartCount + CHART_STEP })),
-  showToast: (message, undo) => set({ toast: { id: ++toastId, message, undo } }),
-  hideToast: () => set({ toast: null }),
+  showToast: (message, undo) => set({ toast: { id: ++toastId, message, undo }, toastShown: true }),
+  hideToast: () => set({ toastShown: false }),
   openMenu: (menu) => set({ menu }),
   closeMenu: () => set({ menu: null }),
   openDialog: (dialog) => set({ dialog }),
