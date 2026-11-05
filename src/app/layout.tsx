@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { IconSprite } from '@/components/icons/IconSprite';
 import { AppShell } from '@/components/shell/AppShell';
+import { OfflineBanner } from '@/components/shell/OfflineBanner';
 import { THEME_INIT } from '@/lib/theme-init';
 import '@/styles/zmusic.css';
 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <a className="skip" href="#vw">
           Lewati ke konten
         </a>
+        <OfflineBanner />
         <IconSprite />
         <AppShell>{children}</AppShell>
       </body>
