@@ -22,9 +22,11 @@ npm run dev
 
 ## Status
 
-Fase 0 (P0-01 … P0-06) selesai. Fase 1: P1-02 (store pemutar), P1-01 (shell, pemutar, Now Playing) dan P1-03 (Beranda) selesai; berikutnya P1-04 (Cari).
+Fase 0 dan Fase 1 (P1-01 … P1-08) selesai: 12 halaman, pemutar, Now Playing, menu, dialog, toast, dan pintasan keyboard. Gerbang G1 menunggu konfirmasi `npm run test:visual` dan `npm run test:e2e` pada build Next.js sungguhan. Berikutnya Fase 2 (audio nyata dan sumber musik); P2-03, P2-04, dan P2-05 butuh verifikasi syarat API resmi lebih dulu.
 
-Peta kode: `src/stores` (player, ui, library), `src/components/{shell,player,cards,lists,views}`, `src/lib/actions.ts` (aksi + toast). Tampilan tiap halaman ada di `src/components/views/*View.tsx`; `app/**/page.tsx` hanya pembungkus tipis.
+Peta kode: `src/stores` (player, ui, library), `src/components/{shell,player,cards,lists,dialogs,forms,views}`, `src/lib/actions.ts` (aksi + toast). Tampilan tiap halaman ada di `src/components/views/*View.tsx`; `app/**/page.tsx` hanya pembungkus tipis. `src/app/not-found.tsx` melayani semua URL tak dikenal.
+
+Uji: `src/tests/unit` (Vitest), `src/tests/visual` (kesamaan piksel dengan HTML), `src/tests/e2e` (pintasan, antrean, menu, saran, toast, dialog).
 
 ## Aturan Emas untuk AI Agen
 

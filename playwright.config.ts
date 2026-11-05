@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
 const PORT = 3100;
 
 export default defineConfig({
-  testDir: 'src/tests/visual',
+  testDir: 'src/tests',
   testMatch: '**/*.spec.ts',
   fullyParallel: true,
   reporter: 'list',

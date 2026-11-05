@@ -16,28 +16,54 @@ interface Props {
   queue?: boolean;
   /** indeks di "Dalam antrean": menampilkan gagang geser dan tombol hapus */
   qi?: number;
+  /** baris sedang diseret (kelas drag) */
+  dragging?: boolean;
+  onDragStart?: (qi: number) => void;
 }
 
 /** Baris lagu (tr() di HTML). Klik baris atau judul = putar; tombol di dalamnya menghentikan propagasi. */
-export function TrackRow({ track: x, k, queue = false, qi }: Props) {
+export function TrackRow({ track: x, k, queue = false, qi, dragging = false, onDragStart }: Props) {
   const isCurrent = usePlayerStore((s) => s.cur === x.i);
   const play = usePlayerStore((s) => s.play);
   const removeFromQueue = usePlayerStore((s) => s.removeFromQueue);
+  const swapInQueue = usePlayerStore((s) => s.swapInQueue);
   const openMenu = useUiStore((s) => s.openMenu);
   const { ref, cls } = useReveal<HTMLDivElement>(!queue);
   const dq = qi !== undefined;
+  const qn = qi ?? 0;
   return (
     <div
       ref={ref}
-      className={`tr${queue ? ' q' : ` rv${cls}`}${dq ? ' dq' : ''}${isCurrent ? ' cur' : ''}`}
+      className={`tr${queue ? ' q' : ` rv${cls}`}${dq ? ' dq' : ''}${isCurrent ? ' cur' : ''}${dragging ? ' drag' : ''}`}
       style={delayStyle(k * 40)}
       data-a="play"
       data-nf=""
       data-qi={dq ? qi : undefined}
       onClick={() => play(x.i)}
+      onContextMenu={(e) => {
+        if (dq) return;
+        e.preventDefault();
+        e.currentTarget.querySelector<HTMLElement>('.tl')?.focus();
+        openMenu({ kind: 'track', index: x.i, right: e.clientX + 220, bottom: e.clientY });
+      }}
     >
       {dq ? (
-        <button className="lk gp" aria-label="Geser urutan (panah atas atau bawah)" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="lk gp"
+          aria-label="Geser urutan (panah atas atau bawah)"
+          onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => {
+            e.preventDefault();
+            onDragStart?.(qn);
+          }}
+          onKeyDown={(e) => {
+            if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+            e.preventDefault();
+            const j = qn + (e.key === 'ArrowUp' ? -1 : 1);
+            swapInQueue(qn, j);
+            requestAnimationFrame(() => document.querySelectorAll<HTMLElement>('#qq .gp')[j]?.focus());
+          }}
+        >
           <Icon name="grip" />
         </button>
       ) : (
@@ -65,7 +91,7 @@ export function TrackRow({ track: x, k, queue = false, qi }: Props) {
           aria-label="Hapus dari antrean"
           onClick={(e) => {
             e.stopPropagation();
-            if (qi !== undefined) removeFromQueue(qi);
+            removeFromQueue(qn);
           }}
         >
           <Icon name="x" />

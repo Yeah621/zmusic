@@ -18,7 +18,43 @@ function QueuePane() {
   const queue = usePlayerStore((s) => s.queue);
   const clearQueue = usePlayerStore((s) => s.clearQueue);
   const setQueue = usePlayerStore((s) => s.setQueue);
+  const moveInQueue = usePlayerStore((s) => s.moveInQueue);
+  const [drag, setDrag] = useState<number | null>(null);
+  const dragging = useRef<number | null>(null);
+
+  // Seret gagang: pendengar dipasang langsung saat pointerdown (bukan lewat efek) agar gerakan cepat tidak terlewat.
+  // Baris berpindah saat penunjuk melewati titik tengah baris lain (pointermove/up di HTML).
+  const startDrag = (from: number) => {
+    dragging.current = from;
+    setDrag(from);
+    const onMove = (e: PointerEvent) => {
+      const d = dragging.current;
+      const row = document.elementFromPoint(e.clientX, e.clientY)?.closest<HTMLElement>('#qq .tr');
+      if (d === null || !row) return;
+      const over = Number(row.dataset.qi);
+      if (!Number.isInteger(over) || over === d) return;
+      const r = row.getBoundingClientRect();
+      const mid = r.top + r.height / 2;
+      if ((over > d && e.clientY > mid) || (over < d && e.clientY < mid)) {
+        moveInQueue(d, over);
+        dragging.current = over;
+        setDrag(over);
+      }
+    };
+    const end = () => {
+      dragging.current = null;
+      setDrag(null);
+      removeEventListener('pointermove', onMove);
+      removeEventListener('pointerup', end);
+      removeEventListener('pointercancel', end);
+    };
+    addEventListener('pointermove', onMove);
+    addEventListener('pointerup', end);
+    addEventListener('pointercancel', end);
+  };
+
   if (cur < 0) return null;
+  const seen = new Map<number, number>();
   return (
     <>
       {queue.length > 0 && (
@@ -35,9 +71,11 @@ function QueuePane() {
             </button>
           </div>
           <div id="qq">
-            {queue.map((i, j) => (
-              <TrackRow key={`${i}-${j}`} track={T[i]} k={j} queue qi={j} />
-            ))}
+            {queue.map((i, j) => {
+              const n = seen.get(i) ?? 0;
+              seen.set(i, n + 1);
+              return <TrackRow key={`${i}#${n}`} track={T[i]} k={j} queue qi={j} dragging={drag === j} onDragStart={startDrag} />;
+            })}
           </div>
         </>
       )}
@@ -63,6 +101,7 @@ export function NowPlaying() {
   const comments = useLibraryStore((s) => s.comments[cur]);
   const [text, setText] = useState('');
   const closeRef = useRef<HTMLButtonElement>(null);
+  const touchY = useRef(0);
   const x = cur >= 0 ? T[cur] : null;
   const bubble = x ? (comments ?? SEED_COMMENTS).find((c) => pos - c.p * x.d >= 0 && pos - c.p * x.d < 3.5) : undefined;
 
@@ -81,7 +120,19 @@ export function NowPlaying() {
   };
 
   return (
-    <aside className={`np pn gl${open ? ' open' : ''}`} id="np" aria-label="Sedang diputar">
+    <aside
+      className={`np pn gl${open ? ' open' : ''}`}
+      id="np"
+      aria-label="Sedang diputar"
+      onTouchStart={(e) => {
+        touchY.current = e.touches[0].clientY;
+      }}
+      onTouchEnd={(e) => {
+        const swipedDown = e.changedTouches[0].clientY - touchY.current > 110;
+        const onControl = e.target instanceof Element && e.target.closest('.wv,.bar,input,.gp');
+        if (swipedDown && e.currentTarget.scrollTop < 5 && !onControl) setNpOpen(false);
+      }}
+    >
       <button ref={closeRef} className="ib x" data-a="close" aria-label="Tutup pemutar" onClick={() => setNpOpen(false)}>
         <Icon name="down" />
       </button>

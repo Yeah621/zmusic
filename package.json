@@ -12,8 +12,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:visual": "playwright test",
-    "fixtures": "node scripts/extract-fixtures.mjs"
+    "test:visual": "playwright test src/tests/visual",
+    "fixtures": "node scripts/extract-fixtures.mjs",
+    "test:e2e": "playwright test src/tests/e2e"
   },
   "dependencies": {
     "next": "^16.0.0",
