@@ -14,9 +14,12 @@
     "test": "vitest run",
     "test:visual": "playwright test src/tests/visual",
     "fixtures": "node scripts/extract-fixtures.mjs",
-    "test:e2e": "playwright test src/tests/e2e"
+    "test:e2e": "playwright test src/tests/e2e",
+    "check:secrets": "node scripts/check-secrets.mjs .next/static",
+    "test:live": "vitest run src/tests/live"
   },
   "dependencies": {
+    "hls.js": "^1.5.0",
     "next": "^16.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

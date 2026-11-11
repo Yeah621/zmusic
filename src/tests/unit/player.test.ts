@@ -1,11 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { T } from '@/data/mock';
-import { setRandomSource, usePlayerStore as store } from '@/stores/player';
+import { gainAt } from '@/lib/crossfade';
+import { durationOf, setRandomSource, usePlayerStore as store } from '@/stores/player';
 
 const s = () => store.getState();
 
 beforeEach(() => {
-  store.setState({ cur: -1, pos: 0, on: false, sh: false, rp: false, queue: [], hist: [], volume: 0.7, muted: false });
+  store.setState({ cur: -1, pos: 0, on: false, sh: false, rp: false, queue: [], hist: [], volume: 0.7, muted: false, duration: null, engine: false });
   setRandomSource(Math.random);
 });
 
@@ -181,5 +182,43 @@ describe('antrean', () => {
     s().setVolume(2);
     expect(s().volume).toBe(1);
     expect(s().muted).toBe(false);
+  });
+});
+
+describe('audio nyata (engine)', () => {
+  it('jam simulasi berhenti; posisi dan durasi dari audio dipakai dan seek dibatasi durasinya', () => {
+    s().play(0);
+    expect(durationOf(s())).toBe(T[0].d);
+    store.setState({ engine: true });
+    s().setDuration(4);
+    expect(durationOf(s())).toBe(4);
+    s().tick(1, true);
+    expect(s().pos).toBe(0);
+    s().setPosition(3);
+    expect(s().pos).toBe(3);
+    s().seek(99);
+    expect(s().pos).toBe(4);
+    s().play(1);
+    expect(s().duration).toBeNull();
+  });
+
+  it('finish: ulang, antrean, berhenti', () => {
+    s().play(2);
+    store.setState({ engine: true, pos: 50 });
+    s().toggleRepeat();
+    s().finish(true);
+    expect([s().cur, s().pos, s().on]).toEqual([2, 0, true]);
+    s().toggleRepeat();
+    s().addToQueue(7);
+    s().finish(true);
+    expect(s().cur).toBe(7);
+    store.setState({ queue: [] });
+    s().finish(false);
+    expect([s().cur, s().on, s().pos]).toEqual([7, false, 0]);
+  });
+
+  it('gainAt: naik di awal, turun di akhir, 1 di tengah, 1 bila crossfade mati', () => {
+    expect([gainAt(0, 100, 4), gainAt(2, 100, 4), gainAt(50, 100, 4), gainAt(98, 100, 4), gainAt(100, 100, 4)]).toEqual([0, 0.5, 1, 0.5, 0]);
+    expect([gainAt(1, 100, 0), gainAt(1, 0, 4)]).toEqual([1, 1]);
   });
 });

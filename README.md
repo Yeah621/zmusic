@@ -22,11 +22,17 @@ npm run dev
 
 ## Status
 
-Fase 0 dan Fase 1 (P1-01 … P1-08) selesai: 12 halaman, pemutar, Now Playing, menu, dialog, toast, dan pintasan keyboard. Gerbang G1 menunggu konfirmasi `npm run test:visual` dan `npm run test:e2e` pada build Next.js sungguhan. Berikutnya Fase 2 (audio nyata dan sumber musik); P2-03, P2-04, dan P2-05 butuh verifikasi syarat API resmi lebih dulu.
+Fase 0 dan Fase 1 selesai (gerbang G1 menunggu konfirmasi `npm run test:visual` dan `npm run test:e2e` pada build Next.js sungguhan).
 
-Peta kode: `src/stores` (player, ui, library), `src/components/{shell,player,cards,lists,dialogs,forms,views}`, `src/lib/actions.ts` (aksi + toast). Tampilan tiap halaman ada di `src/components/views/*View.tsx`; `app/**/page.tsx` hanya pembungkus tipis. `src/app/not-found.tsx` melayani semua URL tak dikenal.
+Fase 2 sebagian: P2-01 (AudioEngine), P2-02 (kontrak sumber, agregator, `/api/search`, `/api/home`, `/api/stream/[id]`), P2-03/04/05 (adapter Audius, Deezer, Jamendo), P2-07 (cache, 429, `Promise.allSettled`), P2-08 (HLS lewat hls.js dinamis) sudah ditulis dan diuji dengan fixture. **Belum:** P2-06 (data nyata di halaman) dan gerbang G2; adapter belum pernah menyentuh API sungguhan (jalankan `LIVE=1 npm run test:live`, lihat `docs/sources.md`). Syarat resmi tiap sumber ada di `docs/sources.md`; Jamendo dan Deezer hanya untuk aplikasi non-komersial.
 
-Uji: `src/tests/unit` (Vitest), `src/tests/visual` (kesamaan piksel dengan HTML), `src/tests/e2e` (pintasan, antrean, menu, saran, toast, dialog).
+Peta kode: `src/stores` (player, ui, library), `src/components/{shell,player,cards,lists,dialogs,forms,views}`, `src/lib/sources` (adapter), `src/lib/actions.ts` (aksi + toast). Tampilan tiap halaman ada di `src/components/views/*View.tsx`; `app/**/page.tsx` hanya pembungkus tipis. `src/app/not-found.tsx` melayani semua URL tak dikenal.
+
+Audio: tanpa stream nyata, pemutar memakai jam simulasi. Tambahkan `?audio=demo` ke URL untuk memutar nada uji `public/demo.wav` di semua lagu contoh (`?audio=preview` membatasi 2 detik, `?audio=broken` memicu galat).
+
+Uji: `src/tests/unit` (Vitest), `src/tests/visual` (kesamaan piksel dengan HTML), `src/tests/e2e` (pintasan, antrean, menu, saran, toast, dialog, audio), `src/tests/live` (API sungguhan, hanya dengan `LIVE=1`). Setelah `npm run build`, jalankan `npm run check:secrets` (gerbang G2: tidak ada kunci rahasia di bundel klien).
+
+Dependensi di luar daftar PRD: `hls.js` (daftar PRD mengizinkan hanya bila stream HLS dibutuhkan; kode memuatnya dinamis dan hanya untuk `kind: 'hls'`, jadi tidak membebani bundel awal). Respons sumber divalidasi dengan pemeriksa tipe kecil buatan sendiri (`src/lib/sources/parse.ts`), bukan zod, agar bisa diuji tanpa jaringan.
 
 ## Aturan Emas untuk AI Agen
 

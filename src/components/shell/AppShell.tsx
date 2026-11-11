@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { ContextMenu } from '@/components/dialogs/ContextMenu';
 import { DialogHost } from '@/components/dialogs/DialogHost';
 import { Toast } from '@/components/dialogs/Toast';
+import { AudioEngine } from '@/components/player/AudioEngine';
 import { NowPlaying } from '@/components/player/NowPlaying';
 import { PlayerBar } from '@/components/player/PlayerBar';
 import { BottomNav } from './BottomNav';
@@ -33,6 +34,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <ContextMenu />
       <DialogHost />
       <Toast />
+      <AudioEngine />
       <ShellEffects />
     </>
   );

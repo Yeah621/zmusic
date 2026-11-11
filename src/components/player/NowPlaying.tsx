@@ -8,7 +8,7 @@ import { shareTrack } from '@/lib/actions';
 import { coverStyle } from '@/lib/cover-art';
 import { fmt } from '@/lib/format';
 import { SEED_COMMENTS, useLibraryStore } from '@/stores/library';
-import { usePlayerStore } from '@/stores/player';
+import { durationOf, useDuration, usePlayerStore } from '@/stores/player';
 import { toast, useUiStore } from '@/stores/ui';
 import { Controls } from './Controls';
 import { Waveform } from './Waveform';
@@ -93,6 +93,7 @@ function QueuePane() {
 export function NowPlaying() {
   const cur = usePlayerStore((s) => s.cur);
   const pos = usePlayerStore((s) => s.pos);
+  const duration = useDuration();
   const open = useUiStore((s) => s.npOpen);
   const tab = useUiStore((s) => s.npTab);
   const setNpOpen = useUiStore((s) => s.setNpOpen);
@@ -103,7 +104,7 @@ export function NowPlaying() {
   const closeRef = useRef<HTMLButtonElement>(null);
   const touchY = useRef(0);
   const x = cur >= 0 ? T[cur] : null;
-  const bubble = x ? (comments ?? SEED_COMMENTS).find((c) => pos - c.p * x.d >= 0 && pos - c.p * x.d < 3.5) : undefined;
+  const bubble = x ? (comments ?? SEED_COMMENTS).find((c) => pos - c.p * duration >= 0 && pos - c.p * duration < 3.5) : undefined;
 
   useEffect(() => {
     if (open) closeRef.current?.focus();
@@ -114,7 +115,7 @@ export function NowPlaying() {
     if (!t) return;
     const s = usePlayerStore.getState();
     if (s.cur < 0) return toast('Putar lagu dulu untuk berkomentar');
-    useLibraryStore.getState().addComment(s.cur, s.pos / T[s.cur].d, t);
+    useLibraryStore.getState().addComment(s.cur, s.pos / durationOf(s), t);
     setText('');
     toast(`Komentar ditambahkan di ${fmt(s.pos)}`);
   };
@@ -150,7 +151,7 @@ export function NowPlaying() {
         <span className="cmb" id="cmb" aria-live="off">
           {bubble ? `“${bubble.t}”` : ''}
         </span>
-        <span className="tt">{x ? fmt(x.d) : '0:00'}</span>
+        <span className="tt">{x ? fmt(duration) : '0:00'}</span>
       </div>
       <div className="ctl" id="nctl">
         <Controls />

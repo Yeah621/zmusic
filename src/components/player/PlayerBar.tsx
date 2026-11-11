@@ -5,7 +5,7 @@ import { T } from '@/data/mock';
 import { toggleMuteWithToast } from '@/lib/actions';
 import { coverStyle } from '@/lib/cover-art';
 import { fmt } from '@/lib/format';
-import { usePlayerStore } from '@/stores/player';
+import { useDuration, usePlayerStore } from '@/stores/player';
 import { useUiStore } from '@/stores/ui';
 import { Controls } from './Controls';
 import { useSeek } from './useSeek';
@@ -14,6 +14,7 @@ import { useSeek } from './useSeek';
 export function PlayerBar() {
   const cur = usePlayerStore((s) => s.cur);
   const pos = usePlayerStore((s) => s.pos);
+  const duration = useDuration();
   const volume = usePlayerStore((s) => s.volume);
   const muted = usePlayerStore((s) => s.muted);
   const setVolume = usePlayerStore((s) => s.setVolume);
@@ -45,14 +46,14 @@ export function PlayerBar() {
             tabIndex={0}
             aria-label="Posisi lagu"
             aria-valuemin={0}
-            aria-valuemax={x ? x.d : 100}
+            aria-valuemax={x ? duration : 100}
             aria-valuenow={x ? pos | 0 : 0}
-            aria-valuetext={x ? `${fmt(pos)} dari ${fmt(x.d)}` : undefined}
+            aria-valuetext={x ? `${fmt(pos)} dari ${fmt(duration)}` : undefined}
             {...seek}
           >
-            <i className="fill" style={x ? { width: `${(pos / x.d) * 100}%` } : undefined} />
+            <i className="fill" style={x ? { width: `${(pos / duration) * 100}%` } : undefined} />
           </div>
-          <span className="tt">{x ? fmt(x.d) : '0:00'}</span>
+          <span className="tt">{x ? fmt(duration) : '0:00'}</span>
         </div>
       </div>
       <div className="pv">

@@ -4,7 +4,7 @@ import { T } from '@/data/mock';
 import { fmt } from '@/lib/format';
 import { waveHeights } from '@/lib/waveform';
 import { SEED_COMMENTS, useLibraryStore } from '@/stores/library';
-import { usePlayerStore } from '@/stores/player';
+import { useDuration, usePlayerStore } from '@/stores/player';
 import { useSeek } from './useSeek';
 
 export function Bars({ heights, className = 'wb' }: { heights: readonly number[]; className?: string }) {
@@ -21,6 +21,7 @@ export function Bars({ heights, className = 'wb' }: { heights: readonly number[]
 export function Waveform() {
   const cur = usePlayerStore((s) => s.cur);
   const pos = usePlayerStore((s) => s.pos);
+  const duration = useDuration();
   const comments = useLibraryStore((s) => s.comments[cur]);
   const heights = useMemo(() => waveHeights(cur >= 0 ? cur : 0), [cur]);
   const seek = useSeek();
@@ -33,10 +34,10 @@ export function Waveform() {
       tabIndex={0}
       aria-label="Posisi lagu"
       aria-valuemin={0}
-      aria-valuemax={x ? x.d : 100}
+      aria-valuemax={x ? duration : 100}
       aria-valuenow={x ? pos | 0 : 0}
-      aria-valuetext={x ? `${fmt(pos)} dari ${fmt(x.d)}` : undefined}
-      style={x ? ({ '--p': `${(pos / x.d) * 100}%` } as CSSProperties) : undefined}
+      aria-valuetext={x ? `${fmt(pos)} dari ${fmt(duration)}` : undefined}
+      style={x ? ({ '--p': `${(pos / duration) * 100}%` } as CSSProperties) : undefined}
       {...seek}
     >
       <Bars heights={heights} />

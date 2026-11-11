@@ -25,6 +25,9 @@ function randomOther(cur: number): number {
   return j >= cur ? j + 1 : j;
 }
 
+/** Durasi efektif lagu aktif (detik): dari audio nyata bila sudah diketahui, jika tidak dari data lagu. */
+export const durationOf = (s: Pick<PlayerState, 'cur' | 'duration'>): number => (s.cur < 0 ? 0 : (s.duration ?? T[s.cur].d));
+
 export interface PlayerState {
   /** indeks lagu aktif di T (-1 = belum ada) */
   cur: number;
@@ -39,12 +42,21 @@ export interface PlayerState {
   hist: number[];
   volume: number;
   muted: boolean;
+  /** durasi dari elemen audio (null = pakai data lagu) */
+  duration: number | null;
+  /** true = audio nyata yang menggerakkan posisi (jam simulasi berhenti) */
+  engine: boolean;
   play: (i: number, force?: boolean) => void;
   playSet: (ids: readonly number[], shuffle?: boolean) => boolean;
   toggle: () => void;
   pause: () => void;
   next: (d: 1 | -1) => void;
   seek: (sec: number) => void;
+  setPosition: (sec: number) => void;
+  setDuration: (d: number | null) => void;
+  setEngine: (on: boolean) => void;
+  /** Lagu selesai (padanan endT() di HTML): dipanggil jam simulasi dan AudioEngine. */
+  finish: (autoplay: boolean) => void;
   /** Maju `dt` detik (jam simulasi Fase 1; diganti AudioEngine di P2-01). `autoplay` = pengaturan `ap`. */
   tick: (dt: number, autoplay: boolean) => void;
   toggleShuffle: () => void;
@@ -66,7 +78,7 @@ export const usePlayerStore = create<PlayerState>()((set, get) => {
   /** Mulai memutar lagu `cur` dari awal dan catat di riwayat. */
   const begin = (cur: number, queue?: number[]) => {
     const { hist } = get();
-    set({ cur, pos: 0, on: true, hist: [cur, ...hist.filter((i) => i !== cur)].slice(0, MAX_HISTORY), ...(queue ? { queue } : {}) });
+    set({ cur, pos: 0, duration: null, on: true, hist: [cur, ...hist.filter((i) => i !== cur)].slice(0, MAX_HISTORY), ...(queue ? { queue } : {}) });
   };
 
   return {
@@ -79,6 +91,8 @@ export const usePlayerStore = create<PlayerState>()((set, get) => {
     hist: [],
     volume: 0.7,
     muted: false,
+    duration: null,
+    engine: false,
 
     play: (i, force = false) => {
       if (!T[i]) return;
@@ -107,14 +121,21 @@ export const usePlayerStore = create<PlayerState>()((set, get) => {
     seek: (sec) => {
       const { cur } = get();
       if (cur < 0) return;
-      set({ pos: Math.max(0, Math.min(T[cur].d, sec)) });
+      set((s) => ({ pos: Math.max(0, Math.min(durationOf(s), sec)) }));
     },
+    setPosition: (pos) => set({ pos }),
+    setDuration: (duration) => set({ duration }),
+    setEngine: (engine) => set({ engine }),
     tick: (dt, autoplay) => {
       const s = get();
-      if (!s.on || s.cur < 0) return;
+      if (!s.on || s.cur < 0 || s.engine) return;
       const pos = s.pos + dt;
-      if (pos < T[s.cur].d) return set({ pos });
-      // lagu selesai (padanan endT() di HTML)
+      if (pos < durationOf(s)) return set({ pos });
+      s.finish(autoplay);
+    },
+    finish: (autoplay) => {
+      const s = get();
+      if (s.cur < 0) return;
       if (s.rp) return set({ pos: 0 });
       if (s.queue.length) return s.next(1);
       if (autoplay && !s.sh) {
@@ -164,3 +185,5 @@ export const usePlayerStore = create<PlayerState>()((set, get) => {
     toggleMute: () => set((s) => ({ muted: !s.muted })),
   };
 });
+
+export const useDuration = (): number => usePlayerStore(durationOf);
