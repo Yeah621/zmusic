@@ -1,0 +1,14 @@
+{
+  "_catatan": "Fixture SINTETIS: bentuk mengikuti dokumentasi API Deezer (chart/track); URL preview dan isinya karangan.",
+  "data": [
+    {
+      "id": 3135556, "title": "Aurora Kita", "duration": 221, "rank": 845000,
+      "preview": "https://example.invalid/preview/abc.mp3?hdnea=exp=1893456000~acl=/preview/abc.mp3*~hmac=00",
+      "link": "https://www.deezer.com/track/3135556",
+      "artist": { "id": 27, "name": "Nadin Skye" },
+      "album": { "id": 302127, "title": "Aurora", "cover_big": "https://example.invalid/c500.jpg", "cover_medium": "https://example.invalid/c250.jpg" }
+    },
+    { "id": 2, "title": "Tanpa Preview", "duration": 100, "preview": "", "link": "https://www.deezer.com/track/2", "artist": { "id": 1, "name": "X" }, "album": { "id": 1, "title": "Y" } }
+  ],
+  "total": 2
+}

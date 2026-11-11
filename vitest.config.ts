@@ -4,5 +4,5 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   esbuild: { jsx: 'automatic' },
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
-  test: { include: ['src/tests/unit/**/*.test.{ts,tsx}'], passWithNoTests: true },
+  test: { include: ['src/tests/unit/**/*.test.{ts,tsx}', 'src/tests/live/**/*.test.ts'], passWithNoTests: true },
 });

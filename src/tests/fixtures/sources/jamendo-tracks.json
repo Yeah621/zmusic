@@ -1,0 +1,17 @@
+{
+  "_catatan": "Fixture SINTETIS: nama field mengikuti contoh respons di dokumentasi resmi Jamendo v3.0 (nilai berupa string), isinya karangan.",
+  "headers": { "status": "success", "code": 0, "error_message": "", "warnings": "", "results_count": 2 },
+  "results": [
+    {
+      "id": "1532771", "name": "Hujan Terakhir", "duration": "216", "artist_id": "11", "artist_name": "Raya Senja",
+      "album_id": "3", "album_name": "Senja di Kota", "album_image": "https://example.invalid/album3.jpg", "image": "https://example.invalid/cover3.jpg",
+      "position": "1", "license_ccurl": "http://creativecommons.org/licenses/by-nc-sa/3.0/", "releasedate": "2024-05-01",
+      "audio": "https://example.invalid/stream?trackid=1532771&format=mp31", "audiodownload": "https://example.invalid/download/1532771", "audiodownload_allowed": true
+    },
+    {
+      "id": "1532772", "name": "Tanpa Album", "duration": "140", "artist_id": "12", "artist_name": "Oshi",
+      "album_id": "", "album_name": "", "image": "", "license_ccurl": "http://creativecommons.org/licenses/by/4.0/",
+      "audio": "https://example.invalid/stream?trackid=1532772&format=mp31", "audiodownload_allowed": false
+    }
+  ]
+}

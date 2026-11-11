@@ -1,0 +1,14 @@
+{
+  "_catatan": "Fixture SINTETIS: bentuk mengikuti docs.audius.org (Get Trending Tracks); isinya karangan.",
+  "data": [
+    {
+      "id": "D7KyD", "title": "Neon Rooftop", "duration": 192, "genre": "Electronic", "permalink": "/zaralune/neon-rooftop", "is_streamable": true, "play_count": 1200,
+      "artwork": { "150x150": "https://example.invalid/a150.jpg", "480x480": "https://example.invalid/a480.jpg", "1000x1000": "https://example.invalid/a1000.jpg" },
+      "user": { "id": "u1", "name": "Zara Lune", "handle": "zaralune" }
+    },
+    {
+      "id": "X9", "title": "Tak Bisa Diputar", "duration": 100, "genre": "Pop", "permalink": "/a/b", "is_streamable": false, "artwork": null,
+      "user": { "id": "u2", "name": "Lintang", "handle": "lintang" }
+    }
+  ]
+}
