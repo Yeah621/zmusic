@@ -1,12 +1,15 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { T } from '@/data/mock';
 import { gainAt } from '@/lib/crossfade';
-import { durationOf, setRandomSource, usePlayerStore as store } from '@/stores/player';
+import { useCatalog } from '@/stores/catalog';
+import { contextOf, durationOf, setRandomSource, upcoming, usePlayerStore as store } from '@/stores/player';
 
 const s = () => store.getState();
 
 beforeEach(() => {
-  store.setState({ cur: -1, pos: 0, on: false, sh: false, rp: false, queue: [], hist: [], volume: 0.7, muted: false, duration: null, engine: false });
+  useCatalog.getState().reset();
+  useCatalog.getState().seedSample();
+  store.setState({ cur: -1, ctx: null, pos: 0, on: false, sh: false, rp: false, queue: [], hist: [], volume: 0.7, muted: false, duration: null, engine: false });
   setRandomSource(Math.random);
 });
 
@@ -220,5 +223,81 @@ describe('audio nyata (engine)', () => {
   it('gainAt: naik di awal, turun di akhir, 1 di tengah, 1 bila crossfade mati', () => {
     expect([gainAt(0, 100, 4), gainAt(2, 100, 4), gainAt(50, 100, 4), gainAt(98, 100, 4), gainAt(100, 100, 4)]).toEqual([0, 0.5, 1, 0.5, 0]);
     expect([gainAt(1, 100, 0), gainAt(1, 0, 4)]).toEqual([1, 1]);
+  });
+});
+
+describe('daftar pemutaran (konteks)', () => {
+  it('berikutnya dan sebelumnya mengikuti daftar yang dipilih, melingkar', () => {
+    s().play(3, false, [3, 7, 10]);
+    s().next(1);
+    expect(s().cur).toBe(7);
+    s().next(1);
+    expect(s().cur).toBe(10);
+    s().next(1);
+    expect(s().cur).toBe(3);
+    s().next(-1);
+    expect(s().cur).toBe(10);
+  });
+
+  it('tanpa daftar baru, daftar lama dipertahankan; tanpa daftar sama sekali = seluruh katalog', () => {
+    s().play(3, false, [3, 7, 10]);
+    s().play(7);
+    expect(s().ctx).toEqual([3, 7, 10]);
+    store.setState({ ctx: null, cur: -1 });
+    s().play(2);
+    expect(s().ctx).toBeNull();
+    s().next(1);
+    expect(s().cur).toBe(3);
+  });
+
+  it('acak memilih dari daftar, bukan dari seluruh katalog', () => {
+    s().toggleShuffle();
+    s().play(3, false, [3, 7, 10]);
+    setRandomSource(() => 0);
+    s().next(1);
+    expect(s().cur).toBe(7);
+    setRandomSource(() => 0.99);
+    s().next(1);
+    expect(s().cur).toBe(10);
+  });
+
+  it('playSet menjadikan set sebagai daftar pemutaran; antrean dan daftar terpisah', () => {
+    s().playSet([4, 6, 9]);
+    expect(s().ctx).toEqual([4, 6, 9]);
+    expect(s().queue).toEqual([6, 9]);
+    expect(contextOf(s())).toEqual([4, 6, 9]);
+    store.setState({ ctx: null });
+    expect(contextOf(s())).toHaveLength(14);
+  });
+
+  it('akhir lagu melanjutkan daftar yang dipilih; setelah habis baru putar otomatis, atau berhenti bila dimatikan', () => {
+    setRandomSource(() => 0);
+    s().play(3, false, [3, 7]);
+    s().seek(T[3].d - 0.05);
+    s().tick(0.1, true);
+    expect(s().cur).toBe(7);
+    s().seek(T[7].d - 0.05);
+    s().tick(0.1, true);
+    expect(s().cur).toBe(1);
+    s().play(3, true, [3, 7]);
+    s().play(7);
+    s().seek(T[7].d - 0.05);
+    s().tick(0.1, false);
+    expect(s().cur).toBe(7);
+    expect(s().on).toBe(false);
+  });
+
+  it('upcoming: lagu berikutnya melingkar; daftar pendek tidak mengulang lagu yang sedang diputar', () => {
+    expect(upcoming([1, 2, 3, 4, 5, 6], 5, 4)).toEqual([6, 1, 2, 3]);
+    expect(upcoming([9], 9, 4)).toEqual([]);
+    expect(upcoming([9, 8], 9, 4)).toEqual([8]);
+  });
+
+  it('lagu preview: durasi efektif dibatasi 30 detik, sebelum dan sesudah metadata audio', () => {
+    const [i] = useCatalog.getState().ingest([{ id: 'deezer:1', source: 'deezer', title: 'Cuplikan', artist: 'Tester', durationSec: 204, hue: 10, playable: 'preview' }]);
+    s().play(i);
+    expect(durationOf(s())).toBe(30);
+    s().setDuration(12);
+    expect(durationOf(s())).toBe(12);
   });
 });

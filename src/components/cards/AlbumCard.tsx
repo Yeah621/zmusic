@@ -1,19 +1,16 @@
 'use client';
 import Link from 'next/link';
-import { AL, type Album } from '@/data/mock';
 import { coverStyle } from '@/lib/cover-art';
 import { delayStyle, useReveal } from '@/lib/use-reveal';
+import type { Album } from '@/stores/catalog';
 
 export function AlbumCard({ album: a, k }: { album: Album; k: number }) {
   const { ref, cls } = useReveal<HTMLAnchorElement>();
-  const i = AL.indexOf(a);
   return (
-    <Link ref={ref} className={`card rv${cls}`} style={delayStyle(k * 60)} href={`/album/${i}`}>
-      <div className="cv" style={coverStyle({ h: a.h, s: i + 3 })} />
+    <Link ref={ref} className={`card rv${cls}`} style={delayStyle(k * 60)} href={`/album/${encodeURIComponent(a.k)}`}>
+      <div className="cv" style={coverStyle({ h: a.h, s: a.i + 3, art: a.art })} />
       <h4>{a.n}</h4>
-      <p>
-        {a.y} · {a.a}
-      </p>
+      <p>{a.y !== undefined ? `${a.y} · ${a.a}` : a.a}</p>
     </Link>
   );
 }

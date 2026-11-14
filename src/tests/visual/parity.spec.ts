@@ -1,8 +1,11 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { expect, test, type Page } from '@playwright/test';
+import { useSampleData } from '../support';
 import { diffRatio } from './diff';
 import { MAX_DIFF, ROUTES, THEMES, VIEWPORTS } from './routes';
+
+test.beforeEach(({ context }) => useSampleData(context));
 
 const REF = pathToFileURL(path.resolve('reference/zmusic-fixed.html')).href;
 const FROZEN = new Date('2026-01-15T09:00:00+07:00'); // sapaan Beranda bergantung jam

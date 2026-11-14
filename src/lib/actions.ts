@@ -1,4 +1,6 @@
-import { A, T, type QuickPlaylist } from '@/data/mock';
+import type { QuickPlaylist } from '@/data/mock';
+import { fetchGenre } from '@/lib/data/hooks';
+import { trackAt, useCatalog } from '@/stores/catalog';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
 import { toast } from '@/stores/ui';
@@ -14,12 +16,16 @@ export function playIds(ids: readonly number[], shuffle = false): void {
   if (!usePlayerStore.getState().playSet(ids, shuffle)) toast('Belum ada lagu');
 }
 
-/** Playlist cepat bawaan = semua lagu bergenre sama (padanan pls() di HTML). */
+/** Playlist cepat bawaan = lagu tren bergenre sama (padanan pls() di HTML); isinya dimuat dulu bila belum ada. */
 export function playQuickPlaylist(p: QuickPlaylist): void {
-  const ids = T.filter((x) => x.g === p.g).map((x) => x.i);
-  if (!ids.length) return toast('Playlist masih kosong');
-  toast(`Memutar playlist ${p.n}`);
-  playIds(ids);
+  fetchGenre(p.g).then(
+    (d) => {
+      if (!d.ids.length) return toast('Playlist masih kosong');
+      toast(`Memutar playlist ${p.n}`);
+      playIds(d.ids);
+    },
+    () => toast('Gagal memuat playlist. Coba lagi.'),
+  );
 }
 
 export function toggleMuteWithToast(): void {
@@ -29,10 +35,10 @@ export function toggleMuteWithToast(): void {
 
 export function shareTrack(): void {
   const { cur } = usePlayerStore.getState();
-  const x = T[cur < 0 ? 0 : cur];
+  const x = trackAt(cur < 0 ? 0 : cur);
   const url = location.href;
   if (navigator.share) {
-    navigator.share({ title: x.t, text: `${x.t} — ${x.a} di ZMusic`, url }).catch(() => {});
+    navigator.share(x ? { title: x.t, text: `${x.t} — ${x.a} di ZMusic`, url } : { url }).catch(() => {});
     return;
   }
   navigator.clipboard?.writeText(url).catch(() => {});
@@ -52,5 +58,6 @@ export function setSleepTimer(minutes: number): void {
 
 export function toggleFollowWithToast(k: number): void {
   const following = useLibraryStore.getState().toggleFollow(k);
-  toast(following ? `Mulai mengikuti ${A[k].n}` : `Berhenti mengikuti ${A[k].n}`);
+  const name = useCatalog.getState().artists[k]?.n ?? 'artis';
+  toast(following ? `Mulai mengikuti ${name}` : `Berhenti mengikuti ${name}`);
 }

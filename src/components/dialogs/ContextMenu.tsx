@@ -2,8 +2,10 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, type KeyboardEvent } from 'react';
 import { Icon, type IconName } from '@/components/icons/Icon';
-import { A, AL, PB, T } from '@/data/mock';
+import { PB } from '@/data/mock';
 import { setSleepTimer, shareTrack, toggleLikeWithToast } from '@/lib/actions';
+import { SOURCE_LABEL } from '@/lib/constants';
+import { useCatalog } from '@/stores/catalog';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
 import { toast, useUiStore } from '@/stores/ui';
@@ -55,9 +57,10 @@ export function ContextMenu() {
     );
   } else if (menu?.kind === 'track') {
     const i = menu.index;
-    const x = T[i];
-    const artist = A.findIndex((y) => y.n === x.a);
-    const album = AL.findIndex((y) => y.t.includes(i));
+    const cat = useCatalog.getState();
+    const x = cat.tracks[i];
+    const artist = x ? cat.artists[x.ak] : undefined;
+    const album = x?.bk !== undefined ? cat.albums[x.bk] : undefined;
     const m = /^\/playlist\/(\d+)/.exec(pathname ?? '');
     const ownIdx = m ? Number(m[1]) - PB.length : -1;
     const { right, bottom } = menu;
@@ -83,7 +86,7 @@ export function ContextMenu() {
         label: 'Mulai radio',
         run: () => {
           usePlayerStore.getState().startRadio(i);
-          toast(`Radio ${x.t}`);
+          toast(`Radio ${x?.t ?? ''}`);
         },
       },
       { icon: 'heart', label: liked ? 'Hapus dari Disukai' : 'Simpan ke Disukai', run: () => toggleLikeWithToast(i) },
@@ -101,8 +104,13 @@ export function ContextMenu() {
         },
       });
     }
-    items.push({ icon: 'user', label: 'Lihat artis', run: () => router.push(`/artist/${artist}`) });
-    if (album >= 0) items.push({ icon: 'lib', label: 'Lihat album', run: () => router.push(`/album/${album}`) });
+    if (artist) items.push({ icon: 'user', label: 'Lihat artis', run: () => router.push(`/artist/${encodeURIComponent(artist.k)}`) });
+    if (album) items.push({ icon: 'lib', label: 'Lihat album', run: () => router.push(`/album/${encodeURIComponent(album.k)}`) });
+    // Atribusi: sumber, lisensi, dan tautan balik ke halaman lagu di sumber (syarat penyedia musik, lihat docs/sources.md)
+    if (x && x.url && x.source !== 'sample') {
+      const url = x.url;
+      items.push({ icon: 'eye', label: `Buka di ${SOURCE_LABEL[x.source]}${x.lic ? ` · ${x.lic}` : ''}`, run: () => window.open(url, '_blank', 'noopener,noreferrer') });
+    }
     items.push({ icon: 'share', label: 'Bagikan', run: shareTrack });
   }
 

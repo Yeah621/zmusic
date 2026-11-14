@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { T } from '@/data/mock';
+import { trackAt } from '@/stores/catalog';
 
 export interface SessionUser {
   name: string;
@@ -39,6 +39,7 @@ const MAX_RECENTS = 6;
 interface LibraryState {
   user: SessionUser | null;
   likes: number[];
+  /** indeks artis di katalog */
   follows: number[];
   ownPlaylists: OwnPlaylist[];
   recents: string[];
@@ -75,7 +76,7 @@ export const useLibraryStore = create<LibraryState>()((set, get) => ({
   quality: 1,
 
   toggleLike: (i) => {
-    if (!Number.isInteger(i) || !T[i]) return null;
+    if (!Number.isInteger(i) || !trackAt(i)) return null;
     const { likes } = get();
     const had = likes.includes(i);
     set({ likes: had ? likes.filter((x) => x !== i) : [...likes, i] });

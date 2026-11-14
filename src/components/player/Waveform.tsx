@@ -1,8 +1,8 @@
 'use client';
 import { useMemo, type CSSProperties } from 'react';
-import { T } from '@/data/mock';
 import { fmt } from '@/lib/format';
 import { waveHeights } from '@/lib/waveform';
+import { useTrack } from '@/stores/catalog';
 import { SEED_COMMENTS, useLibraryStore } from '@/stores/library';
 import { useDuration, usePlayerStore } from '@/stores/player';
 import { useSeek } from './useSeek';
@@ -25,7 +25,7 @@ export function Waveform() {
   const comments = useLibraryStore((s) => s.comments[cur]);
   const heights = useMemo(() => waveHeights(cur >= 0 ? cur : 0), [cur]);
   const seek = useSeek();
-  const x = cur >= 0 ? T[cur] : null;
+  const x = useTrack(cur) ?? null;
   return (
     <div
       className="wv"

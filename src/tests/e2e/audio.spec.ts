@@ -1,4 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
+import { useSampleData } from '../support';
+
+test.beforeEach(({ context }) => useSampleData(context));
 
 /** ?audio=demo memutar /demo.wav (4 detik) untuk semua lagu contoh; preview membatasi 2 detik; broken memicu galat. */
 async function open(page: Page, mode: string) {

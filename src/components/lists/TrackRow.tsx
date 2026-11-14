@@ -1,10 +1,12 @@
 'use client';
 import { LikeButton } from '@/components/cards/LikeButton';
 import { Icon } from '@/components/icons/Icon';
-import type { Track } from '@/data/mock';
+import { useTrackList } from '@/components/lists/TrackList';
 import { coverStyle } from '@/lib/cover-art';
 import { fmt } from '@/lib/format';
+import { genreOrSource, subtitle } from '@/lib/track-label';
 import { delayStyle, useReveal } from '@/lib/use-reveal';
+import type { Track } from '@/stores/catalog';
 import { usePlayerStore } from '@/stores/player';
 import { useUiStore } from '@/stores/ui';
 
@@ -28,6 +30,7 @@ export function TrackRow({ track: x, k, queue = false, qi, dragging = false, onD
   const removeFromQueue = usePlayerStore((s) => s.removeFromQueue);
   const swapInQueue = usePlayerStore((s) => s.swapInQueue);
   const openMenu = useUiStore((s) => s.openMenu);
+  const list = useTrackList();
   const { ref, cls } = useReveal<HTMLDivElement>(!queue);
   const dq = qi !== undefined;
   const qn = qi ?? 0;
@@ -39,7 +42,7 @@ export function TrackRow({ track: x, k, queue = false, qi, dragging = false, onD
       data-a="play"
       data-nf=""
       data-qi={dq ? qi : undefined}
-      onClick={() => play(x.i)}
+      onClick={() => play(x.i, false, queue ? undefined : list)}
       onContextMenu={(e) => {
         if (dq) return;
         e.preventDefault();
@@ -79,9 +82,9 @@ export function TrackRow({ track: x, k, queue = false, qi, dragging = false, onD
       <div className="cv" style={coverStyle(x)} />
       <button className="tl">
         <b>{x.t}</b>
-        <span>{x.a}</span>
+        <span>{subtitle(x)}</span>
       </button>
-      <p className="al">{x.pv === 'p' ? 'Pribadi' : x.g}</p>
+      <p className="al">{genreOrSource(x)}</p>
       <LikeButton index={x.i} />
       <p className="tm">{fmt(x.d)}</p>
       {dq ? (

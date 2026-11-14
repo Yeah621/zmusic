@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { T } from '@/data/mock';
+import { allIndices, effectiveDuration, trackAt, useCatalog } from '@/stores/catalog';
 
 const MAX_HISTORY = 8;
 
@@ -18,19 +18,34 @@ function shuffled(ids: readonly number[]): number[] {
   return a;
 }
 
-/** Indeks acak selain `cur` (seragam), jadi acak tidak pernah mengulang lagu yang sedang diputar. */
-function randomOther(cur: number): number {
-  if (T.length < 2) return cur;
-  const j = Math.floor(rand() * (T.length - 1));
-  return j >= cur ? j + 1 : j;
+/** Lagu acak dari `list` selain `cur` (seragam), jadi acak tidak pernah mengulang lagu yang sedang diputar. */
+function randomOther(list: readonly number[], cur: number): number {
+  const others = list.filter((i) => i !== cur);
+  return others.length ? others[Math.floor(rand() * others.length)] : cur;
+}
+
+/** Daftar pemutaran saat ini: konteks yang dipilih (mis. isi album) atau, bila tidak ada, seluruh katalog seperti di HTML Fase 1. */
+export const contextOf = (s: Pick<PlayerState, 'ctx'>): readonly number[] => s.ctx ?? allIndices();
+
+/** `n` lagu berikutnya dalam daftar pemutaran setelah `cur` (melingkar), untuk panel "Selanjutnya". */
+export function upcoming(list: readonly number[], cur: number, n: number): number[] {
+  const at = list.indexOf(cur);
+  const count = Math.min(n, Math.max(0, list.length - 1));
+  return Array.from({ length: count }, (_, k) => list[(at + 1 + k + list.length) % list.length]);
 }
 
 /** Durasi efektif lagu aktif (detik): dari audio nyata bila sudah diketahui, jika tidak dari data lagu. */
-export const durationOf = (s: Pick<PlayerState, 'cur' | 'duration'>): number => (s.cur < 0 ? 0 : (s.duration ?? T[s.cur].d));
+export const durationOf = (s: Pick<PlayerState, 'cur' | 'duration'>): number => {
+  if (s.cur < 0) return 0;
+  const x = trackAt(s.cur);
+  return s.duration ?? (x ? effectiveDuration(x) : 0);
+};
 
 export interface PlayerState {
-  /** indeks lagu aktif di T (-1 = belum ada) */
+  /** indeks lagu aktif di katalog (-1 = belum ada) */
   cur: number;
+  /** daftar pemutaran untuk berikutnya/sebelumnya (indeks katalog); null = seluruh katalog */
+  ctx: number[] | null;
   /** posisi dalam detik */
   pos: number;
   on: boolean;
@@ -46,7 +61,8 @@ export interface PlayerState {
   duration: number | null;
   /** true = audio nyata yang menggerakkan posisi (jam simulasi berhenti) */
   engine: boolean;
-  play: (i: number, force?: boolean) => void;
+  /** `ctx` = daftar tempat lagu ini diputar (album, hasil cari, ...) untuk berikutnya/sebelumnya; tanpa `ctx` daftar lama dipertahankan. */
+  play: (i: number, force?: boolean, ctx?: readonly number[]) => void;
   playSet: (ids: readonly number[], shuffle?: boolean) => boolean;
   toggle: () => void;
   pause: () => void;
@@ -76,13 +92,14 @@ export interface PlayerState {
 
 export const usePlayerStore = create<PlayerState>()((set, get) => {
   /** Mulai memutar lagu `cur` dari awal dan catat di riwayat. */
-  const begin = (cur: number, queue?: number[]) => {
+  const begin = (cur: number, o: { queue?: number[]; ctx?: number[] | null } = {}) => {
     const { hist } = get();
-    set({ cur, pos: 0, duration: null, on: true, hist: [cur, ...hist.filter((i) => i !== cur)].slice(0, MAX_HISTORY), ...(queue ? { queue } : {}) });
+    set({ cur, pos: 0, duration: null, on: true, hist: [cur, ...hist.filter((i) => i !== cur)].slice(0, MAX_HISTORY), ...(o.queue ? { queue: o.queue } : {}), ...(o.ctx !== undefined ? { ctx: o.ctx } : {}) });
   };
 
   return {
     cur: -1,
+    ctx: null,
     pos: 0,
     on: false,
     sh: false,
@@ -94,15 +111,16 @@ export const usePlayerStore = create<PlayerState>()((set, get) => {
     duration: null,
     engine: false,
 
-    play: (i, force = false) => {
-      if (!T[i]) return;
-      if (i === get().cur && !force) return get().toggle();
-      begin(i);
+    play: (i, force = false, ctx) => {
+      if (!trackAt(i)) return;
+      const s = get();
+      if (i === s.cur && !force) return s.toggle();
+      begin(i, { ctx: ctx ? [...ctx] : undefined });
     },
     playSet: (ids, shuffle = false) => {
       const list = shuffle ? shuffled(ids) : [...ids];
-      if (!list.length || !T[list[0]]) return false;
-      begin(list[0], list.slice(1));
+      if (!list.length || !trackAt(list[0])) return false;
+      begin(list[0], { queue: list.slice(1), ctx: list });
       return true;
     },
     toggle: () => {
@@ -115,8 +133,12 @@ export const usePlayerStore = create<PlayerState>()((set, get) => {
       const s = get();
       if (s.cur < 0) return s.play(0);
       if (d < 0 && s.pos > 3) return set({ pos: 0 });
-      if (d > 0 && s.queue.length) return begin(s.queue[0], s.queue.slice(1));
-      begin(s.sh ? randomOther(s.cur) : (s.cur + d + T.length) % T.length);
+      if (d > 0 && s.queue.length) return begin(s.queue[0], { queue: s.queue.slice(1) });
+      const list = contextOf(s);
+      if (!list.length) return;
+      if (s.sh) return begin(randomOther(list, s.cur));
+      const at = list.indexOf(s.cur);
+      begin(list[at < 0 ? (d > 0 ? 0 : list.length - 1) : (at + d + list.length) % list.length]);
     },
     seek: (sec) => {
       const { cur } = get();
@@ -138,11 +160,17 @@ export const usePlayerStore = create<PlayerState>()((set, get) => {
       if (s.cur < 0) return;
       if (s.rp) return set({ pos: 0 });
       if (s.queue.length) return s.next(1);
+      // daftar yang dipilih (album, hasil cari, ...) dilanjutkan sampai habis; putar otomatis baru bekerja setelah itu
+      if (s.ctx && !s.sh) {
+        const at = s.ctx.indexOf(s.cur);
+        if (at >= 0 && at < s.ctx.length - 1) return s.next(1);
+      }
       if (autoplay && !s.sh) {
-        const x = T[s.cur];
+        const all = useCatalog.getState().tracks;
+        const x = all[s.cur];
         const recent = s.hist.slice(0, 3);
-        const c = T.filter((y) => y.g === x.g && y.i !== s.cur && !recent.includes(y.i));
-        return s.play(c.length ? c[Math.floor(rand() * c.length)].i : (s.cur + 1) % T.length, true);
+        const c = all.filter((y) => y.g === x.g && y.i !== s.cur && !recent.includes(y.i));
+        return s.play(c.length ? c[Math.floor(rand() * c.length)].i : (s.cur + 1) % all.length, true);
       }
       if (s.sh) return s.next(1);
       set({ on: false, pos: 0 });
@@ -176,9 +204,9 @@ export const usePlayerStore = create<PlayerState>()((set, get) => {
       return prev;
     },
     startRadio: (i) => {
-      const x = T[i];
+      const x = trackAt(i);
       if (!x) return;
-      begin(i, shuffled(T.filter((y) => y.g === x.g && y.i !== i).map((y) => y.i)));
+      begin(i, { queue: shuffled(useCatalog.getState().tracks.filter((y) => y.g === x.g && y.i !== i).map((y) => y.i)) });
     },
 
     setVolume: (v) => set({ volume: Math.max(0, Math.min(1, v)), muted: false }),

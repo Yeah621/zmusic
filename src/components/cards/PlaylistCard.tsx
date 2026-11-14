@@ -12,7 +12,7 @@ export function PlaylistCard({ playlist: p, k }: { playlist: PlaylistInfo; k: nu
     <Link ref={ref} className={`card rv${cls}`} style={delayStyle((k + 1) * 50)} href={`/playlist/${k}`}>
       <div className="cv" style={coverStyle({ h: p.h, s: k + 1 })} />
       <h4>{p.n}</h4>
-      <p>{`${p.tracks.length} lagu${p.own ? ' · Milikmu' : ''}`}</p>
+      <p>{p.tracks ? `${p.tracks.length} lagu${p.own ? ' · Milikmu' : ''}` : 'Memuat…'}</p>
     </Link>
   );
 }

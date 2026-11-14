@@ -2,8 +2,10 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { Icon } from '@/components/icons/Icon';
+import { fetchSearch } from '@/lib/data/hooks';
+import { dataMode } from '@/lib/data/mode';
 import { routeFlag, silentPathOf } from '@/lib/route-flag';
-import { searchQueryFromPath, suggest, type Suggestion } from '@/lib/search';
+import { resultsOf, searchQueryFromPath, suggestFrom, type Suggestion } from '@/lib/search';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
 
@@ -22,6 +24,7 @@ export function SearchBox() {
   const [open, setOpen] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const input = useRef<HTMLInputElement>(null);
+  const latest = useRef('');
   const onSearchPage = (pathname ?? '').startsWith('/search');
   const value = typed ?? searchQueryFromPath(pathname);
 
@@ -30,10 +33,22 @@ export function SearchBox() {
     setActive(-1);
   };
   const show = (v: string) => {
-    const list = suggest(v);
-    setItems(list);
-    setActive(-1);
-    setOpen(list.length > 0);
+    latest.current = v;
+    const apply = (list: Suggestion[]) => {
+      setItems(list);
+      setActive(-1);
+      setOpen(list.length > 0);
+    };
+    if (!v.trim()) return apply([]);
+    fetchSearch(v.trim()).then(
+      (d) => {
+        // jawaban basi dibuang: kata kunci sudah berubah selama menunggu
+        if (latest.current === v) apply(suggestFrom(v, resultsOf(d), dataMode() === 'sample'));
+      },
+      () => {
+        if (latest.current === v) apply([]);
+      },
+    );
   };
   const commit = (v: string) => {
     hide();
@@ -46,9 +61,11 @@ export function SearchBox() {
     const s = items[k];
     if (!s) return;
     hide();
-    if (s.kind === 't' && s.i !== undefined) play(s.i, true);
-    else if (s.kind === 'a') router.push(`/artist/${s.i}`);
-    else if (s.kind === 'al') router.push(`/album/${s.i}`);
+    if (s.kind === 't' && s.i !== undefined) {
+      // lagu yang dipilih memakai saran lagu lain sebagai daftar pemutarannya
+      play(s.i, true, items.flatMap((x) => (x.kind === 't' && x.i !== undefined ? [x.i] : [])));
+    } else if (s.kind === 'a' && s.key !== undefined) router.push(`/artist/${encodeURIComponent(s.key)}`);
+    else if (s.kind === 'al' && s.key !== undefined) router.push(`/album/${encodeURIComponent(s.key)}`);
     else commit(s.label);
   };
   const onInput = (v: string) => {

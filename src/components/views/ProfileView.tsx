@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { Icon } from '@/components/icons/Icon';
+import { TrackList } from '@/components/lists/TrackList';
 import { TrackRow } from '@/components/lists/TrackRow';
 import { GateEmpty } from '@/components/shell/EmptyState';
 import { Reveal } from '@/components/shell/Reveal';
-import { T } from '@/data/mock';
+import { useCatalog } from '@/stores/catalog';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
 import { toast, useUiStore } from '@/stores/ui';
@@ -16,6 +17,7 @@ export function ProfileView() {
   const follows = useLibraryStore((s) => s.follows.length);
   const setUser = useLibraryStore((s) => s.setUser);
   const hist = usePlayerStore((s) => s.hist);
+  const tracks = useCatalog((s) => s.tracks);
   const openDialog = useUiStore((s) => s.openDialog);
   if (!user) return <GateEmpty title="Masuk untuk melihat profil" text="Simpan lagu favorit dan unggah karyamu." />;
   return (
@@ -52,7 +54,15 @@ export function ProfileView() {
         </Reveal>
       </div>
       <h2>Terakhir diputar</h2>
-      {hist.length ? hist.map((i, k) => <TrackRow key={i} track={T[i]} k={k} />) : <p>Belum ada riwayat. Putar lagu untuk memulai.</p>}
+      {hist.length ? (
+        <TrackList ids={hist}>
+          {hist.map((i, k) => (
+            <TrackRow key={i} track={tracks[i]} k={k} />
+          ))}
+        </TrackList>
+      ) : (
+        <p>Belum ada riwayat. Putar lagu untuk memulai.</p>
+      )}
       <div className="cta">
         <Link className="btn b3" href="/settings">
           <Icon name="settings" />

@@ -3,12 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import { LikeButton } from '@/components/cards/LikeButton';
 import { Icon } from '@/components/icons/Icon';
 import { TrackRow } from '@/components/lists/TrackRow';
-import { T } from '@/data/mock';
 import { shareTrack } from '@/lib/actions';
+import { PREVIEW_SECONDS, SOURCE_LABEL } from '@/lib/constants';
 import { coverStyle } from '@/lib/cover-art';
 import { fmt } from '@/lib/format';
+import { useCatalog, useTrack } from '@/stores/catalog';
 import { SEED_COMMENTS, useLibraryStore } from '@/stores/library';
-import { durationOf, useDuration, usePlayerStore } from '@/stores/player';
+import { contextOf, durationOf, upcoming, useDuration, usePlayerStore } from '@/stores/player';
 import { toast, useUiStore } from '@/stores/ui';
 import { Controls } from './Controls';
 import { Waveform } from './Waveform';
@@ -19,6 +20,8 @@ function QueuePane() {
   const clearQueue = usePlayerStore((s) => s.clearQueue);
   const setQueue = usePlayerStore((s) => s.setQueue);
   const moveInQueue = usePlayerStore((s) => s.moveInQueue);
+  const ctx = usePlayerStore((s) => s.ctx);
+  const tracks = useCatalog((s) => s.tracks);
   const [drag, setDrag] = useState<number | null>(null);
   const dragging = useRef<number | null>(null);
 
@@ -74,7 +77,7 @@ function QueuePane() {
             {queue.map((i, j) => {
               const n = seen.get(i) ?? 0;
               seen.set(i, n + 1);
-              return <TrackRow key={`${i}#${n}`} track={T[i]} k={j} queue qi={j} dragging={drag === j} onDragStart={startDrag} />;
+              return tracks[i] ? <TrackRow key={`${i}#${n}`} track={tracks[i]} k={j} queue qi={j} dragging={drag === j} onDragStart={startDrag} /> : null;
             })}
           </div>
         </>
@@ -82,8 +85,8 @@ function QueuePane() {
       <div className="qh">
         <h4>Selanjutnya</h4>
       </div>
-      {[1, 2, 3, 4].map((k, j) => (
-        <TrackRow key={k} track={T[(cur + k) % T.length]} k={j} queue />
+      {upcoming(contextOf({ ctx }), cur, 4).map((i, j) => (
+        <TrackRow key={j} track={tracks[i]} k={j} queue />
       ))}
     </>
   );
@@ -103,7 +106,7 @@ export function NowPlaying() {
   const [text, setText] = useState('');
   const closeRef = useRef<HTMLButtonElement>(null);
   const touchY = useRef(0);
-  const x = cur >= 0 ? T[cur] : null;
+  const x = useTrack(cur) ?? null;
   const bubble = x ? (comments ?? SEED_COMMENTS).find((c) => pos - c.p * duration >= 0 && pos - c.p * duration < 3.5) : undefined;
 
   useEffect(() => {
@@ -145,6 +148,22 @@ export function NowPlaying() {
         </div>
         <LikeButton index={cur} className="lk ph" />
       </div>
+      {x && x.source !== 'sample' ? (
+        // Atribusi sumber (wajib bagi penyedia musik): nama + tautan balik ke halaman lagu, lisensi, dan penanda cuplikan
+        <p className="lyn" id="src">
+          {x.playable === 'preview' ? <span className="bdg">{`Preview ${PREVIEW_SECONDS} detik`}</span> : null}
+          {x.playable === 'preview' ? ' ' : null}
+          {'via '}
+          {x.url ? (
+            <a className="lkx" href={x.url} target="_blank" rel="noopener noreferrer">
+              {SOURCE_LABEL[x.source]}
+            </a>
+          ) : (
+            SOURCE_LABEL[x.source]
+          )}
+          {x.lic ? ` · ${x.lic}` : null}
+        </p>
+      ) : null}
       <Waveform />
       <div className="pr">
         <span className="tc">{fmt(pos)}</span>

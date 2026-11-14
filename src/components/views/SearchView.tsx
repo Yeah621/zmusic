@@ -5,11 +5,16 @@ import { ArtistCard } from '@/components/cards/ArtistCard';
 import { GenreTile } from '@/components/cards/GenreTile';
 import { Icon } from '@/components/icons/Icon';
 import { Shelf } from '@/components/lists/Shelf';
+import { TrackList } from '@/components/lists/TrackList';
 import { TrackRow } from '@/components/lists/TrackRow';
 import { EmptyState } from '@/components/shell/EmptyState';
+import { LoadError } from '@/components/shell/LoadError';
+import { RouteSkeleton } from '@/components/shell/RouteSkeleton';
 import { TL } from '@/data/mock';
 import { coverStyle } from '@/lib/cover-art';
-import { searchAll, searchQueryFromPath } from '@/lib/search';
+import { useSearch } from '@/lib/data/hooks';
+import { resultsOf, searchQueryFromPath } from '@/lib/search';
+import { genreOrSource, subtitle } from '@/lib/track-label';
 import { useOnline } from '@/lib/use-online';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
@@ -24,6 +29,7 @@ export function SearchView() {
   const pushRecent = useLibraryStore((s) => s.pushRecent);
   const removeRecent = useLibraryStore((s) => s.removeRecent);
   const play = usePlayerStore((s) => s.play);
+  const res = useSearch(q, online);
   const openTerm = (term: string) => {
     pushRecent(term);
     router.push(`/search/${encodeURIComponent(term)}`);
@@ -73,43 +79,47 @@ export function SearchView() {
     );
   }
 
-  const { songs, artists, albums } = searchAll(q);
+  if (!res.data) return res.status === 'error' ? <LoadError error={res.error} onRetry={res.reload} /> : <RouteSkeleton />;
+  const { songs, artists, albums } = resultsOf(res.data);
   const top = songs[0];
   if (!songs.length && !artists.length && !albums.length) {
     return <EmptyState icon="search" title={`Tidak ada hasil untuk “${q}”`} text="Coba kata kunci atau genre lain." href="/" cta="Jelajahi genre" />;
   }
+  const ids = songs.map((x) => x.i);
   return (
     <>
       {top ? (
         <>
           <h2>Hasil teratas</h2>
-          <button className="top1" onClick={() => play(top.i)}>
+          <button className="top1" onClick={() => play(top.i, false, ids)}>
             <div className="cv" style={coverStyle(top)} />
             <div>
               <h3>{top.t}</h3>
-              <p>{`${top.a} · ${top.g}`}</p>
+              <p>{`${subtitle(top)} · ${genreOrSource(top)}`}</p>
             </div>
             <span className="ib pb">
               <Icon name="play" />
             </span>
           </button>
           <h2>Lagu</h2>
-          {songs.map((x, k) => (
-            <TrackRow key={x.i} track={x} k={k} />
-          ))}
+          <TrackList ids={ids}>
+            {songs.map((x, k) => (
+              <TrackRow key={x.i} track={x} k={k} />
+            ))}
+          </TrackList>
         </>
       ) : null}
       {artists.length ? (
         <Shelf title="Artis">
           {artists.map((a, k) => (
-            <ArtistCard key={a.n} artist={a} k={k} />
+            <ArtistCard key={a.k} artist={a} k={k} />
           ))}
         </Shelf>
       ) : null}
       {albums.length ? (
         <Shelf title="Album">
           {albums.map((a, k) => (
-            <AlbumCard key={a.n} album={a} k={k} />
+            <AlbumCard key={a.k} album={a} k={k} />
           ))}
         </Shelf>
       ) : null}

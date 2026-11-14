@@ -1,11 +1,12 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { T } from '@/data/mock';
 import { toggleLikeWithToast, toggleMuteWithToast } from '@/lib/actions';
 import { registerMediaSession, setMediaMetadata, setPlaybackState } from '@/lib/media-session';
+import { dataMode } from '@/lib/data/mode';
 import { routeFlag } from '@/lib/route-flag';
 import { applyTheme } from '@/lib/theme';
+import { trackAt, useCatalog } from '@/stores/catalog';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
 import { toast, useUiStore } from '@/stores/ui';
@@ -20,6 +21,11 @@ export function ShellEffects() {
   const pathname = usePathname();
   const firstRoute = useRef(true);
 
+  // Mode contoh (?data=sample): katalog Fase 1 terisi sejak awal, jadi pintasan seperti Spasi memutar lagu pertama di halaman mana pun
+  useEffect(() => {
+    if (dataMode() === 'sample') useCatalog.getState().seedSample();
+  }, []);
+
   // Jam simulasi Fase 1 (diganti AudioEngine di P2-01)
   useEffect(() => {
     const id = setInterval(() => usePlayerStore.getState().tick(0.1, useLibraryStore.getState().settings.ap), 100);
@@ -32,12 +38,13 @@ export function ShellEffects() {
   }, [on]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty('--th', String(cur >= 0 ? T[cur].h : 165));
+    document.documentElement.style.setProperty('--th', String(trackAt(cur)?.h ?? 165));
     setMediaMetadata(cur);
   }, [cur]);
 
   useEffect(() => {
-    document.title = on && cur >= 0 ? `${T[cur].t} · ZMusic` : DEFAULT_TITLE;
+    const x = trackAt(cur);
+    document.title = on && x ? `${x.t} · ZMusic` : DEFAULT_TITLE;
   }, [on, cur]);
 
   useEffect(() => registerMediaSession(), []);

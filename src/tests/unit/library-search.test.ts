@@ -1,11 +1,16 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { searchAll, searchQueryFromPath, suggest } from '@/lib/search';
 import { RULES, validate } from '@/lib/validate';
+import { useCatalog } from '@/stores/catalog';
 import { useLibraryStore as store } from '@/stores/library';
 
 const s = () => store.getState();
 
-beforeEach(() => store.setState({ likes: [], follows: [], ownPlaylists: [], recents: ['lo-fi', 'kairo'] }));
+beforeEach(() => {
+  useCatalog.getState().reset();
+  useCatalog.getState().seedSample();
+  store.setState({ likes: [], follows: [], ownPlaylists: [], recents: ['lo-fi', 'kairo'] });
+});
 
 describe('pencarian', () => {
   it('searchAll mencocokkan judul, artis, dan genre tanpa peduli huruf besar', () => {

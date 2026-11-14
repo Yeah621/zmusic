@@ -18,6 +18,10 @@ async function checkSource(src: MusicSource, genre: string) {
   const stream = await src.getStream(t.id.slice(src.id.length + 1));
   const res = await fetch(stream.url, { headers: { range: 'bytes=0-1' } });
   expect([res.status === 200 || res.status === 206, (res.headers.get('content-type') ?? '').includes('audio')]).toEqual([true, true]);
+  // P2-06: halaman Artis dan Album diturunkan dari pencarian nama; sumber harus benar-benar menemukannya
+  const byArtist = await src.search(t.artist, { limit: 20 });
+  expect(byArtist.some((r) => r.artist.toLowerCase() === t.artist.toLowerCase())).toBe(true);
+  if (t.album) expect((await src.search(`${t.album} ${t.artist}`, { limit: 20 })).some((r) => r.album === t.album)).toBe(true);
   // semua genre aplikasi harus diterima sumber (hasil boleh kosong, galat tidak)
   for (const g of ['Pop', 'Lo-fi', 'Electronic', 'Hip-hop', 'Akustik']) expect(Array.isArray(await src.trending({ genre: g, limit: 3 }))).toBe(true);
 }

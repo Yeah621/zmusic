@@ -139,7 +139,8 @@ export function AudioEngine() {
           st.finish(autoplay());
           return;
         }
-        st.setPosition(a.currentTime);
+        // timeupdate datang tiap ±250 ms: posisi yang ditampilkan tidak pernah melewati batas preview
+        st.setPosition(limit.current !== undefined ? Math.min(a.currentTime, limit.current) : a.currentTime);
       }}
       onLoadedMetadata={(e) => {
         const d = e.currentTarget.duration;

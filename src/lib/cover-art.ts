@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { httpUrl } from '@/lib/url';
 
 // P0-05: disalin dari genArt() di reference/zmusic-fixed.html. Logika TIDAK boleh diubah;
 // uji unit membandingkan keluarannya dengan kode asli HTML (src/tests/fixtures/reference.json).
@@ -12,12 +13,21 @@ else o=`<path d="M50 12 88 80H12Z" fill="${c3}" opacity=".7"/><path d="M50 40 74
 const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><rect width="100" height="100" fill="url(#g)"/>${o}</svg>`;
 return AC[key]="url('data:image/svg+xml,"+encodeURIComponent(svg)+"')"}
 
-/** Padanan cv() di HTML: `i` (indeks lagu) atau `s` (benih) menentukan bentuk cover. */
-export const coverStyle = (x: { h: number; i?: number; s?: number }): CSSProperties => ({
-  backgroundImage: genArt(x.h, x.i != null ? x.i : x.s || 0),
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-});
+/** URL artwork yang aman dipakai di `url("...")`: hanya http(s), tanpa tanda kutip, garis miring terbalik, atau baris baru. */
+export function safeArtUrl(raw: string | undefined): string | null {
+  const href = httpUrl(raw);
+  return href && !/["\\\n\r]/.test(href) ? href : null;
+}
+
+/**
+ * Padanan cv() di HTML: `i` (indeks lagu) atau `s` (benih) menentukan bentuk cover generatif.
+ * Bila ada artwork asli (`art`), ia dilapiskan di atas cover generatif sebagai cadangan (tetap terlihat bila gambar gagal dimuat).
+ */
+export const coverStyle = (x: { h: number; i?: number; s?: number; art?: string }): CSSProperties => {
+  const gen = genArt(x.h, x.i != null ? x.i : x.s || 0);
+  const art = safeArtUrl(x.art);
+  return { backgroundImage: art ? `url("${art}"), ${gen}` : gen, backgroundSize: 'cover', backgroundPosition: 'center' };
+};
 
 /** Padanan ab() di HTML: latar gradien avatar dan banner artis. */
 export const artistBg = (h: number): CSSProperties => ({

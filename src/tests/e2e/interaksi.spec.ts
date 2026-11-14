@@ -1,4 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
+import { useSampleData } from '../support';
+
+test.beforeEach(({ context }) => useSampleData(context));
 
 /** Buka halaman dan tunggu hidrasi + konten rute siap. */
 async function open(page: Page, path = '/') {

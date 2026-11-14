@@ -2,13 +2,13 @@ import { getJson, RateLimitError, SourceError } from './http';
 import { hueFrom } from './ids';
 import { isRec, list, num, str, type Rec } from './parse';
 import type { MusicSource, SourceTrack, Stream } from './types';
+import { PREVIEW_SECONDS } from '@/lib/constants';
 
 // Diverifikasi: developers.deezer.com/termsofuse (non-komersial, atribusi, pedoman merek) dan FAQ resmi
 // (API hanya memberi preview 30 detik). Nama endpoint dan field dari dokumentasi API Deezer; id genre dari memori, cek lewat GET /genre.
 const BASE = 'https://api.deezer.com';
 /** genre aplikasi → id genre chart Deezer (Lo-fi tidak punya genre sendiri: pakai chart umum) */
 const GENRE_IDS: Record<string, number> = { Pop: 132, Electronic: 106, 'Hip-hop': 116, Akustik: 466 };
-export const PREVIEW_SECONDS = 30;
 
 export interface DeezerConfig {
   fetch?: typeof fetch;

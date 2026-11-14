@@ -1,10 +1,11 @@
 'use client';
 import { LikeButton } from '@/components/cards/LikeButton';
 import { Icon } from '@/components/icons/Icon';
-import { T } from '@/data/mock';
 import { toggleMuteWithToast } from '@/lib/actions';
 import { coverStyle } from '@/lib/cover-art';
 import { fmt } from '@/lib/format';
+import { subtitle } from '@/lib/track-label';
+import { useTrack } from '@/stores/catalog';
 import { useDuration, usePlayerStore } from '@/stores/player';
 import { useUiStore } from '@/stores/ui';
 import { Controls } from './Controls';
@@ -21,7 +22,7 @@ export function PlayerBar() {
   const setNpOpen = useUiStore((s) => s.setNpOpen);
   const openMenu = useUiStore((s) => s.openMenu);
   const seek = useSeek();
-  const x = cur >= 0 ? T[cur] : null;
+  const x = useTrack(cur) ?? null;
   return (
     <footer className="pl gl">
       <div className="pli">
@@ -29,7 +30,7 @@ export function PlayerBar() {
           <span className="pc cvr" style={x ? coverStyle(x) : undefined} />
           <span className="pt">
             <span className="nt">{x ? x.t : 'Pilih lagu'}</span>
-            <span className="na">{x ? x.a : 'ZMusic'}</span>
+            <span className="na">{x ? subtitle(x) : 'ZMusic'}</span>
           </span>
         </button>
         <LikeButton index={cur} className="lk ph" />

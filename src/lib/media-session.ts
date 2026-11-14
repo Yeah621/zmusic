@@ -1,4 +1,5 @@
-import { AL, T } from '@/data/mock';
+import { safeArtUrl } from '@/lib/cover-art';
+import { trackAt } from '@/stores/catalog';
 import { usePlayerStore } from '@/stores/player';
 
 function artwork(h: number): string {
@@ -32,14 +33,15 @@ export function registerMediaSession(): void {
 }
 
 export function setMediaMetadata(cur: number): void {
-  const x = T[cur];
+  const x = trackAt(cur);
   if (!x || !('mediaSession' in navigator)) return;
+  const art = safeArtUrl(x.art);
   try {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: x.t,
       artist: x.a,
-      album: AL.find((a) => a.t.includes(x.i))?.n ?? 'Single',
-      artwork: [{ src: artwork(x.h), sizes: '256x256', type: 'image/png' }],
+      album: x.album ?? 'Single',
+      artwork: art ? [{ src: art }] : [{ src: artwork(x.h), sizes: '256x256', type: 'image/png' }],
     });
   } catch {
     /* abaikan */
