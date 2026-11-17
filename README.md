@@ -19,6 +19,7 @@ npm run dev
 | `npm run test` | Unit (Vitest), termasuk uji kesamaan CSS, ikon, cover, dan data dengan HTML |
 | `npm run test:visual` | Screenshot HTML vs Next (Playwright; 1440/1024/390 px; gelap/terang). Lulus bila ≤ 0,5% piksel berbeda. Aktifkan rute baru dengan `ready: true` di `src/tests/visual/routes.ts` |
 | `npm run fixtures` | Bangkitkan ulang `src/tests/fixtures/reference.json` dari kode asli di HTML |
+| `npx supabase db reset`, `npx supabase test db` | Terapkan migrasi dari nol dan jalankan tes RLS pgTAP (butuh Docker; lihat [docs/supabase.md](docs/supabase.md)) |
 
 ## Status
 
@@ -31,6 +32,8 @@ Fase 2 selesai di kode (P2-01 sampai P2-08), gerbang G2 lulus di sandbox dan **m
 - Komponen data memakai hook klien ke route handler yang sudah ber-cache (bukan komponen server seperti tertulis di tabel P2-06): indeks katalog hidup di klien dan data dimuat setelah hidrasi, jadi server hanya merender skeleton.
 - **Mode contoh** (`?data=sample`, disimpan di sessionStorage seperti `?audio=`): 14 lagu Fase 1 tanpa jaringan. Dipakai uji visual dan e2e (`src/tests/support.ts`) agar gerbang G1 tetap bisa diverifikasi piksel demi piksel, dan untuk kerja UI offline. `?data=live` mencabutnya.
 - Gerbang G2: lagu dari tiga sumber terputar (e2e dengan API dipalsukan di peramban), preview berhenti di 0:30 (e2e dengan audio 35 detik), dan `npm run check:secrets` pada bundel klien. **Belum:** adapter belum pernah menyentuh API sungguhan (`LIVE=1 npm run test:live`; sekarang juga memeriksa asumsi pencarian artis/album, lihat `docs/sources.md`).
+
+Fase 3 (akun dan koleksi) dimulai: **P3-01 ditulis, belum dijalankan.** `supabase/migrations/0001_init.sql` (semua tabel, RLS, trigger, bucket `audio` privat) dan 5 berkas tes pgTAP di `supabase/tests/` (153 asersi) menunggu `supabase db reset` dan `supabase test db` di proyek Supabase nyata; langkah, tabel hak akses, dan penyimpangan dari PRD ada di [docs/supabase.md](docs/supabase.md). Uji statis skema ikut `npm run test`. P3-02 sampai P3-08 menunggu hasil ini.
 
 Keputusan produk: ZMusic gratis dan tanpa iklan; Premium berbayar mungkin menyusul. Jamendo dan Deezer hanya non-komersial: matikan `ENABLE_JAMENDO` dan `ENABLE_DEEZER` sebelum ada pemasukan (`docs/sources.md`).
 
