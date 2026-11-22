@@ -4,6 +4,7 @@ import { Field } from '@/components/forms/Field';
 import { Bars } from '@/components/player/Waveform';
 import { Icon } from '@/components/icons/Icon';
 import { GateEmpty } from '@/components/shell/EmptyState';
+import { RouteSkeleton } from '@/components/shell/RouteSkeleton';
 import { G } from '@/data/mock';
 import { coverStyle } from '@/lib/cover-art';
 import { fmt } from '@/lib/format';
@@ -25,6 +26,7 @@ interface PickedFile {
 /** Form unggah lagu (uplV di HTML). Hanya formulir dan pratinjau; unggah sungguhan di P4-01. */
 export function UploadView() {
   const user = useLibraryStore((s) => s.user);
+  const authReady = useLibraryStore((s) => s.authReady);
   const [file, setFile] = useState<PickedFile | null>(null);
   const [progress, setProgress] = useState(0);
   const [hue, setHue] = useState(165);
@@ -40,6 +42,7 @@ export function UploadView() {
     return () => clearInterval(id);
   }, [file, progress]);
 
+  if (!authReady) return <RouteSkeleton />;
   if (!user) return <GateEmpty title="Masuk untuk mengunggah" text="Bagikan karyamu ke pendengar ZMusic." />;
 
   const pick = (f: File | undefined) => {

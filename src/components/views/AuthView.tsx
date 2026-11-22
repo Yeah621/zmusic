@@ -1,33 +1,56 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Field } from '@/components/forms/Field';
 import { Icon } from '@/components/icons/Icon';
 import { Reveal } from '@/components/shell/Reveal';
+import { runAuth } from '@/lib/auth/flow';
+import { getAuthPort } from '@/lib/auth/port';
 import { focusFirstInvalid, RULES, validate, type Rule } from '@/lib/validate';
 import { useLibraryStore } from '@/stores/library';
 import { toast } from '@/stores/ui';
 
-/** Masuk / Daftar (authV di HTML). Validasi saja; autentikasi nyata di P3-02. */
+/**
+ * Masuk / Daftar (authV di HTML). Isian divalidasi di sini (pesan sama dengan HTML), lalu dikirim lewat port auth
+ * (lib/auth): Supabase, atau tiruan di mode contoh. Galat dari server tampil di bawah kolom yang bersangkutan atau sebagai toast.
+ */
 export function AuthView({ register }: { register: boolean }) {
   const router = useRouter();
   const setUser = useLibraryStore((s) => s.setUser);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [show, setShow] = useState(false);
+  const [pending, setPending] = useState(false);
 
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    // /auth/confirm mengembalikan ke sini bila tautan konfirmasi email tidak valid atau sudah kedaluwarsa
+    if (new URLSearchParams(location.search).get('galat') === 'konfirmasi') toast('Tautan konfirmasi tidak valid atau sudah kedaluwarsa. Coba daftar atau masuk lagi.');
+  }, []);
+
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (pending) return;
     const f = new FormData(e.currentTarget);
     const values = { name: String(f.get('name') ?? ''), email: String(f.get('email') ?? ''), pw: String(f.get('pw') ?? '') };
     const rules: Record<string, Rule> = { ...(register ? { name: RULES.name } : {}), email: RULES.email, pw: RULES.password };
     const errs = validate(values, rules);
     setErrors(errs);
     if (Object.keys(errs).length) return focusFirstInvalid(errs, ['name', 'email', 'pw']);
-    const n = register ? values.name.trim() : values.email.split('@')[0];
-    setUser({ name: n, handle: n.toLowerCase().replace(/\s+/g, '.') });
-    toast(`Selamat datang, ${n}`);
-    router.push('/profile');
+    setPending(true);
+    const step = await runAuth(getAuthPort(), register ? 'register' : 'login', values);
+    setPending(false);
+    if (step.kind === 'welcome') {
+      setUser(step.user);
+      toast(`Selamat datang, ${step.user.name}`);
+      router.push('/profile');
+    } else if (step.kind === 'confirm') {
+      toast('Cek emailmu untuk mengonfirmasi akun, lalu masuk.');
+      router.push('/login');
+    } else if (step.field) {
+      const err = { [step.field]: step.message };
+      setErrors(err);
+      focusFirstInvalid(err, ['name', 'email', 'pw']);
+    } else toast(step.message);
   };
 
   return (
@@ -60,7 +83,7 @@ export function AuthView({ register }: { register: boolean }) {
             {errors.pw}
           </span>
         </div>
-        <button className="btn b1 full" type="submit">
+        <button className="btn b1 full" type="submit" disabled={pending} aria-busy={pending || undefined}>
           {register ? 'Daftar' : 'Masuk'}
         </button>
       </form>

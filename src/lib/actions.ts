@@ -1,4 +1,5 @@
 import type { QuickPlaylist } from '@/data/mock';
+import { requireLogin } from '@/lib/auth/gate';
 import { fetchGenre } from '@/lib/data/hooks';
 import { trackAt, useCatalog } from '@/stores/catalog';
 import { useLibraryStore } from '@/stores/library';
@@ -7,6 +8,7 @@ import { toast } from '@/stores/ui';
 
 /** Suka/batal suka + toast (dengan "Urungkan" saat dihapus). Padanan like() di HTML. */
 export function toggleLikeWithToast(i: number, silent = false): void {
+  if (!requireLogin('Masuk untuk menyukai lagu')) return;
   const liked = useLibraryStore.getState().toggleLike(i);
   if (liked === null || silent) return;
   toast(liked ? 'Ditambahkan ke Lagu Disukai' : 'Dihapus dari Lagu Disukai', liked ? undefined : () => toggleLikeWithToast(i, true));
@@ -57,6 +59,7 @@ export function setSleepTimer(minutes: number): void {
 }
 
 export function toggleFollowWithToast(k: number): void {
+  if (!requireLogin('Masuk untuk mengikuti artis')) return;
   const following = useLibraryStore.getState().toggleFollow(k);
   const name = useCatalog.getState().artists[k]?.n ?? 'artis';
   toast(following ? `Mulai mengikuti ${name}` : `Berhenti mengikuti ${name}`);

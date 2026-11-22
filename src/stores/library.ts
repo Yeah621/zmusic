@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { trackAt } from '@/stores/catalog';
 
 export interface SessionUser {
+  /** id akun (kosong pada pengguna contoh lama) */
+  id?: string;
   name: string;
   handle: string;
 }
@@ -38,6 +40,8 @@ const MAX_RECENTS = 6;
 
 interface LibraryState {
   user: SessionUser | null;
+  /** false sampai status masuk diketahui (sesi dibaca): UI menahan gerbang tamu agar tidak berkedip untuk pengguna yang sudah masuk */
+  authReady: boolean;
   likes: number[];
   /** indeks artis di katalog */
   follows: number[];
@@ -65,8 +69,9 @@ interface LibraryState {
 }
 
 export const useLibraryStore = create<LibraryState>()((set, get) => ({
-  // Fase 1: pengguna contoh seperti keadaan awal HTML (U.in = 1). Akun nyata di P3-02.
-  user: { name: 'Zee Pratama', handle: 'zee.music' },
+  // Mulai sebagai tamu. Pengguna diisi lewat port auth (lib/auth): Supabase, atau pengguna contoh di mode contoh.
+  user: null,
+  authReady: false,
   likes: [],
   follows: [],
   ownPlaylists: [],
@@ -112,5 +117,5 @@ export const useLibraryStore = create<LibraryState>()((set, get) => ({
   addComment: (i, p, t) => set((s) => ({ comments: { ...s.comments, [i]: [...(s.comments[i] ?? SEED_COMMENTS), { p, t }] } })),
   setSetting: (k, v) => set((s) => ({ settings: { ...s.settings, [k]: v } })),
   setQuality: (quality) => set({ quality }),
-  setUser: (user) => set({ user }),
+  setUser: (user) => set({ user, authReady: true }),
 }));

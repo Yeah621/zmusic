@@ -8,6 +8,7 @@ import { ThemeButton } from './ThemeButton';
 
 export function Topbar() {
   const user = useLibraryStore((s) => s.user);
+  const authReady = useLibraryStore((s) => s.authReady);
   return (
     <header className="top">
       <SearchBox />
@@ -15,7 +16,10 @@ export function Topbar() {
       <button className="ib" id="bell" data-a="toast" aria-label="Notifikasi" onClick={() => toast('Tidak ada notifikasi baru')}>
         <Icon name="bell" />
       </button>
-      {user ? (
+      {!authReady ? (
+        // status masuk belum diketahui: tempat avatar ditahan agar tata letak tidak bergeser dan tombol "Masuk" tidak berkedip
+        <span className="ib av" id="avt" aria-hidden="true" style={{ visibility: 'hidden' }} />
+      ) : user ? (
         <Link className="ib av" id="avt" href="/profile" aria-label={`Profil ${user.name}`}>
           {user.name[0].toUpperCase()}
         </Link>

@@ -5,6 +5,7 @@ import { coverStyle } from '@/lib/cover-art';
 import type { PlaylistInfo } from '@/lib/playlists';
 import { delayStyle, useReveal } from '@/lib/use-reveal';
 import { useUiStore } from '@/stores/ui';
+import { requireLogin } from '@/lib/auth/gate';
 
 export function PlaylistCard({ playlist: p, k }: { playlist: PlaylistInfo; k: number }) {
   const { ref, cls } = useReveal<HTMLAnchorElement>();
@@ -21,7 +22,9 @@ export function PlaylistCard({ playlist: p, k }: { playlist: PlaylistInfo; k: nu
 export function NewPlaylistCard() {
   const { ref, cls } = useReveal<HTMLDivElement>();
   const openDialog = useUiStore((s) => s.openDialog);
-  const open = () => openDialog({ kind: 'playlist' });
+  const open = () => {
+    if (requireLogin('Masuk untuk membuat playlist')) openDialog({ kind: 'playlist' });
+  };
   return (
     <div
       ref={ref}

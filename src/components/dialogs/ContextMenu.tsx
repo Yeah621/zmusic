@@ -9,6 +9,7 @@ import { useCatalog } from '@/stores/catalog';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
 import { toast, useUiStore } from '@/stores/ui';
+import { requireLogin } from '@/lib/auth/gate';
 
 interface Item {
   icon: IconName;
@@ -90,7 +91,13 @@ export function ContextMenu() {
         },
       },
       { icon: 'heart', label: liked ? 'Hapus dari Disukai' : 'Simpan ke Disukai', run: () => toggleLikeWithToast(i) },
-      { icon: 'list', label: 'Tambah ke playlist…', run: () => openMenu({ kind: 'addpl', index: i, right, bottom }) },
+      {
+        icon: 'list',
+        label: 'Tambah ke playlist…',
+        run: () => {
+          if (requireLogin('Masuk untuk menambahkan ke playlist')) openMenu({ kind: 'addpl', index: i, right, bottom });
+        },
+      },
     );
     if (ownIdx >= 0 && own[ownIdx]) {
       items.push({

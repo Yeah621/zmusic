@@ -10,12 +10,27 @@ Migrasi `supabase/migrations/0001_init.sql` membuat semua tabel, hak akses, RLS,
 2. **Terapkan migrasi**, pilih salah satu:
    - CLI: `npx supabase login`, `npx supabase link --project-ref <ref>`, `npx supabase db push`.
    - SQL Editor: tempel seluruh isi `supabase/migrations/0001_init.sql`, jalankan sekali.
-3. **Isi `.env.local`** dari Project Settings, API Keys: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (di dashboard disebut Publishable key), dan `SUPABASE_SERVICE_ROLE_KEY` (Secret key; **server saja**, jangan pernah di klien).
+3. **Isi `.env.local`** dari Project Settings, API Keys: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (Publishable key; nama lama `NEXT_PUBLIC_SUPABASE_ANON_KEY` tetap didukung), dan `SUPABASE_SERVICE_ROLE_KEY` (Secret key; **server saja**, jangan pernah di klien). Tanpa URL dan kunci publik, fitur akun nonaktif dan aplikasi berjalan sebagai tamu.
 4. **Buktikan di database lokal** (butuh Docker): `npx supabase init` (sekali), `npx supabase start`, `npx supabase db reset` (menerapkan migrasi dari nol: inilah uji "migrasi berjalan bersih"), lalu `npx supabase test db`. Semua 153 asersi harus lulus. Bila muncul `function plan(integer) does not exist`, pgTAP belum aktif: jalankan `create extension if not exists pgtap with schema extensions;` sekali.
 5. **Angkat admin** (SQL Editor): `insert into public.admins (user_id) select id from auth.users where email = 'kamu@contoh.com';`
-6. Untuk P3-02 (Auth): Authentication, URL Configuration: Site URL `http://localhost:3000` dan Redirect URL `http://localhost:3000/**`.
+6. Pengaturan Auth untuk P3-02: lihat bagian berikut.
 
 Kirim hasil `db reset` dan `test db` (atau galatnya) ke agen; itu penentu gerbang G3.
+
+## Auth email dan kata sandi (P3-02)
+
+Kode: `src/lib/auth` (port, alur, pemetaan galat), `src/lib/supabase` (klien peramban dan server, proxy sesi), `src/proxy.ts` (Next.js 16), `src/app/auth/confirm/route.ts`. Disusun dari dokumentasi Supabase per Nov 2026 (`@supabase/ssr` 0.12, `getClaims()` di proxy, tanpa `getSession()` di server). **Belum dijalankan dengan Supabase sungguhan** (pustakanya tidak terpasang di sandbox pengembang).
+
+Pengaturan di dashboard (Authentication):
+
+- **URL Configuration:** Site URL `http://localhost:3000`; Redirect URLs `http://localhost:3000/**` (tambahkan domain produksi nanti).
+- **Sign In / Providers, Email:** aktif. **Confirm email** aktif secara bawaan. Saat mencoba pertama kali, **matikan** (maka Daftar langsung masuk) atau pakai SMTP sendiri. Penting: SMTP bawaan Supabase hanya mengirim ke anggota organisasi Supabase-mu dan dibatasi sekitar 2 email per jam; alamat lain gagal dengan "Server email belum bisa mengirim ke alamat ini". Untuk pengguna sungguhan, siapkan SMTP kustom (Resend, Postmark, dsb).
+- **Email Templates, Confirm sign up:** ganti tautan dengan `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next={{ .RedirectTo }}`. Alur `token_hash` berfungsi lintas perangkat (daftar di laptop, buka email di ponsel); tautan bawaan (PKCE) hanya bekerja di peramban yang sama. Tautan gagal membawa ke `/login?galat=konfirmasi`.
+- Aplikasi memperlakukan email yang sudah terdaftar (dengan konfirmasi aktif) sama seperti pendaftaran baru ("cek emailmu"), mengikuti respons samaran Supabase agar keberadaan akun tidak bocor.
+
+Daftar periksa manual (P3-02): (1) Daftar: dengan konfirmasi mati langsung masuk ke Profil; dengan konfirmasi aktif muncul "Cek emailmu", tautan di email membawa ke Profil sudah masuk. (2) Muat ulang: tetap masuk, tanpa kedipan tombol "Masuk" yang berkepanjangan. (3) Keluar: toast, avatar jadi "Masuk", Profil tertutup. (4) Masuk dengan kata sandi salah: "Email atau kata sandi salah" di bawah kolom kata sandi. (5) Tab kedua: keluar di satu tab ikut mengeluarkan tab lain. (6) Cookie `sb-…` ada, dan tidak ada `service_role` di bundel klien (`npm run check:secrets`).
+
+Gerbang tamu (P3-03): tamu boleh mencari dan memutar; suka, ikuti, playlist, komentar, unggah, dan profil membawa ke `/login` dengan toast alasan (`src/lib/auth/gate.ts`). Berlaku di semua mode kecuali mode contoh, yang memakai pengguna contoh.
 
 ## Siapa boleh apa
 

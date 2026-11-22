@@ -5,20 +5,23 @@ import { TrackList } from '@/components/lists/TrackList';
 import { TrackRow } from '@/components/lists/TrackRow';
 import { GateEmpty } from '@/components/shell/EmptyState';
 import { Reveal } from '@/components/shell/Reveal';
+import { RouteSkeleton } from '@/components/shell/RouteSkeleton';
+import { signOutAction } from '@/lib/auth/actions';
 import { useCatalog } from '@/stores/catalog';
 import { useLibraryStore } from '@/stores/library';
 import { usePlayerStore } from '@/stores/player';
-import { toast, useUiStore } from '@/stores/ui';
+import { useUiStore } from '@/stores/ui';
 
 /** Profil (profV di HTML): statistik dan terakhir diputar. Unggahan menyusul di P4-01. */
 export function ProfileView() {
   const user = useLibraryStore((s) => s.user);
   const likes = useLibraryStore((s) => s.likes.length);
   const follows = useLibraryStore((s) => s.follows.length);
-  const setUser = useLibraryStore((s) => s.setUser);
+  const authReady = useLibraryStore((s) => s.authReady);
   const hist = usePlayerStore((s) => s.hist);
   const tracks = useCatalog((s) => s.tracks);
   const openDialog = useUiStore((s) => s.openDialog);
+  if (!authReady) return <RouteSkeleton />;
   if (!user) return <GateEmpty title="Masuk untuk melihat profil" text="Simpan lagu favorit dan unggah karyamu." />;
   return (
     <>
@@ -68,13 +71,7 @@ export function ProfileView() {
           <Icon name="settings" />
           Pengaturan
         </Link>
-        <button
-          className="btn b3"
-          onClick={() => {
-            setUser(null);
-            toast('Kamu telah keluar');
-          }}
-        >
+        <button className="btn b3" onClick={() => void signOutAction()}>
           <Icon name="logout" />
           Keluar
         </button>

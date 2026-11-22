@@ -5,6 +5,7 @@ import { Icon } from '@/components/icons/Icon';
 import { PB } from '@/data/mock';
 import { toast, useUiStore } from '@/stores/ui';
 import { NAV_ITEMS, navIndex } from './nav';
+import { requireLogin } from '@/lib/auth/gate';
 
 export function Sidebar() {
   const active = navIndex(usePathname());
@@ -29,7 +30,12 @@ export function Sidebar() {
           </Link>
         ))}
       </div>
-      <button className="nv" onClick={() => openDialog({ kind: 'playlist' })}>
+      <button
+        className="nv"
+        onClick={() => {
+          if (requireLogin('Masuk untuk membuat playlist')) openDialog({ kind: 'playlist' });
+        }}
+      >
         <Icon name="plus" />
         Playlist baru
       </button>

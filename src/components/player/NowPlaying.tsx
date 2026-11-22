@@ -13,6 +13,7 @@ import { contextOf, durationOf, upcoming, useDuration, usePlayerStore } from '@/
 import { toast, useUiStore } from '@/stores/ui';
 import { Controls } from './Controls';
 import { Waveform } from './Waveform';
+import { requireLogin } from '@/lib/auth/gate';
 
 function QueuePane() {
   const cur = usePlayerStore((s) => s.cur);
@@ -118,6 +119,7 @@ export function NowPlaying() {
     if (!t) return;
     const s = usePlayerStore.getState();
     if (s.cur < 0) return toast('Putar lagu dulu untuk berkomentar');
+    if (!requireLogin('Masuk untuk berkomentar')) return;
     useLibraryStore.getState().addComment(s.cur, s.pos / durationOf(s), t);
     setText('');
     toast(`Komentar ditambahkan di ${fmt(s.pos)}`);

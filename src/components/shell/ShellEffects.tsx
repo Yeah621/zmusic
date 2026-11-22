@@ -1,7 +1,9 @@
 'use client';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { toggleLikeWithToast, toggleMuteWithToast } from '@/lib/actions';
+import { getAuthPort } from '@/lib/auth/port';
+import { setNavigator } from '@/lib/navigate';
 import { registerMediaSession, setMediaMetadata, setPlaybackState } from '@/lib/media-session';
 import { dataMode } from '@/lib/data/mode';
 import { routeFlag } from '@/lib/route-flag';
@@ -19,11 +21,28 @@ export function ShellEffects() {
   const on = usePlayerStore((s) => s.on);
   const cur = usePlayerStore((s) => s.cur);
   const pathname = usePathname();
+  const router = useRouter();
   const firstRoute = useRef(true);
 
   // Mode contoh (?data=sample): katalog Fase 1 terisi sejak awal, jadi pintasan seperti Spasi memutar lagu pertama di halaman mana pun
   useEffect(() => {
     if (dataMode() === 'sample') useCatalog.getState().seedSample();
+  }, []);
+
+  // Pindah halaman dari luar komponen (gerbang tamu di lib/auth/gate)
+  useEffect(() => {
+    setNavigator(router.push);
+    return () => setNavigator(null);
+  }, [router]);
+
+  // Status masuk: port auth memberi pengguna saat ini dan tiap perubahannya. Tanpa port (Supabase belum dikonfigurasi) = tamu.
+  useEffect(() => {
+    const port = getAuthPort();
+    if (!port) {
+      useLibraryStore.getState().setUser(null);
+      return;
+    }
+    return port.watch((u) => useLibraryStore.getState().setUser(u));
   }, []);
 
   // Jam simulasi Fase 1 (diganti AudioEngine di P2-01)
