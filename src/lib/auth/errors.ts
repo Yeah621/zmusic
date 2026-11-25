@@ -1,5 +1,7 @@
 import type { AuthErrorCode } from './types';
 
+let lastDetail = '';
+
 export interface ErrorLike {
   code?: string | null;
   status?: number | null;
@@ -31,6 +33,9 @@ export function mapAuthError(e: ErrorLike | null | undefined): AuthErrorCode | n
   if (e.code && BY_CODE[e.code]) return BY_CODE[e.code];
   if (e.status === 429) return 'rate_limited';
   if (e.name === 'AuthRetryableFetchError' || e.status === 0) return 'network';
+  // DEBUG sementara: simpan detail error asli supaya tampil di pesan
+  lastDetail = `[${e.code ?? '-'} / ${e.status ?? '-'} / ${(e as { message?: string }).message ?? '-'}]`;
+  console.error('AUTH ERROR', e);
   return 'unknown';
 }
 
@@ -73,6 +78,6 @@ export function authMessage(code: AuthErrorCode): AuthMessage {
     case 'unconfigured':
       return { field: null, message: 'Akun belum aktif di server ini (Supabase belum dikonfigurasi).' };
     default:
-      return { field: null, message: 'Terjadi galat. Coba lagi sebentar.' };
+      return { field: null, message: `Terjadi galat. ${lastDetail}` };
   }
 }
