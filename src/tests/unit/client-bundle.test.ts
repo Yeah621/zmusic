@@ -15,6 +15,7 @@ const FORBIDDEN: [RegExp, string][] = [
   [/from\s+['"]@\/lib\/api['"]/, '@/lib/api (khusus route handler)'],
   [/from\s+['"]next\/server['"]/, 'next/server'],
   [/from\s+['"]next\/headers['"]/, 'next/headers (khusus server)'],
+  [/from\s+['"]@\/lib\/server\//, '@/lib/server (khusus server)'],
   [/from\s+['"]@\/lib\/supabase\/(server|proxy)['"]/, 'klien Supabase untuk server (cookies, proxy)'],
   [/(SERVICE_ROLE|SECRET_KEY)/, 'kunci rahasia Supabase'],
   [/process\.env\.(AUDIUS|JAMENDO|SUPABASE_SERVICE)/, 'variabel rahasia'],

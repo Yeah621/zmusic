@@ -3,7 +3,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const SECRET_NAMES = ['SUPABASE_SERVICE_ROLE_KEY', 'AUDIUS_API_KEY', 'JAMENDO_CLIENT_ID'];
+export const SECRET_NAMES = ['SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_SECRET_KEY', 'AUDIUS_API_KEY', 'JAMENDO_CLIENT_ID'];
 
 function* files(dir) {
   for (const n of readdirSync(dir)) {

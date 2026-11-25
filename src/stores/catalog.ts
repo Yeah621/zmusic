@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { A as SAMPLE_ARTISTS, AL as SAMPLE_ALBUMS, T as SAMPLE_TRACKS } from '@/data/mock';
 import { PREVIEW_SECONDS } from '@/lib/constants';
+import { albumKeyOf, artistKeyOf } from '@/lib/keys';
 import { hueFrom } from '@/lib/sources/ids';
 import type { SourceId, SourceTrack } from '@/lib/sources/types';
 
@@ -69,11 +70,7 @@ export interface Album {
   ids: number[];
 }
 
-export const slug = (s: string): string => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '');
-export const artistKeyOf = (name: string): string => slug(name) || `a${hueFrom(name)}`;
-export const albumKeyOf = (artist: string, title: string): string => `${artistKeyOf(artist)}~${slug(title) || `a${hueFrom(title)}`}`;
-/** Tebakan nama dari kunci (untuk memuat artis/album saat dibuka langsung lewat URL). */
-export const wordsOfKey = (k: string): string => k.replace(/-/g, ' ').trim();
+export { albumKeyOf, artistKeyOf, slug, wordsOfKey } from '@/lib/keys';
 
 /** Durasi yang benar-benar terputar: lagu preview berhenti di 30 detik. */
 export const effectiveDuration = (x: Pick<Track, 'd' | 'playable'>): number => (x.playable === 'preview' ? Math.min(x.d, PREVIEW_SECONDS) : x.d);
@@ -84,6 +81,8 @@ interface CatalogState {
   albums: Album[];
   /** Masukkan lagu (id yang sudah ada dilewati); mengembalikan indeks katalog sesuai urutan masukan. */
   ingest: (list: readonly SourceTrack[]) => number[];
+  /** Masukkan artis tanpa lagu (mis. dari daftar diikuti yang dimuat dari akun); artis bernama sama dipakai ulang. Mengembalikan indeks. */
+  ingestArtist: (a: { name: string; source: CatalogSource }) => number;
   /** Isi katalog dengan data contoh Fase 1 (indeks sama dengan T/A/AL di HTML). Aman dipanggil berulang. */
   seedSample: () => void;
   /** Hanya untuk uji. */
@@ -138,6 +137,17 @@ export const useCatalog = create<CatalogState>()((set, get) => ({
     }
     if (dirty) set({ tracks, artists, albums });
     return out;
+  },
+
+  ingestArtist: (a) => {
+    const k = artistKeyOf(a.name);
+    const found = artistIdx.get(k);
+    if (found !== undefined) return found;
+    const s = get();
+    const i = s.artists.length;
+    artistIdx.set(k, i);
+    set({ artists: [...s.artists, { i, k, n: a.name, h: hueFrom(a.name), g: '', src: [a.source], ids: [] }] });
+    return i;
   },
 
   seedSample: () => {

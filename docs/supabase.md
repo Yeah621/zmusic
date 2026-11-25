@@ -32,6 +32,17 @@ Daftar periksa manual (P3-02): (1) Daftar: dengan konfirmasi mati langsung masuk
 
 Gerbang tamu (P3-03): tamu boleh mencari dan memutar; suka, ikuti, playlist, komentar, unggah, dan profil membawa ke `/login` dengan toast alasan (`src/lib/auth/gate.ts`). Berlaku di semua mode kecuali mode contoh, yang memakai pengguna contoh.
 
+## Koleksi: suka, ikuti, riwayat putar, riwayat cari (P3-04) dan salinan metadata lagu (P3-07)
+
+Kode: `src/lib/library` (sinkronisasi, repo Supabase dan memori, penyimpanan tamu), `src/lib/server` + `src/app/api/library/ensure/route.ts` (salin metadata lagu, hanya server). **Belum dijalankan dengan Supabase sungguhan.** Logika sinkronisasi (optimistis, batal bila gagal, urutan, gabung saat masuk, pindah data tamu) diuji penuh dengan repo memori; yang belum terbukti adalah kueri PostgREST dan route server.
+
+- **Perilaku:** pengguna masuk menyimpan suka, ikuti, riwayat putar (8 terakhir), dan riwayat cari (6 terakhir) ke akunnya; muncul di perangkat lain setelah masuk. Perubahan langsung terlihat (optimistis); bila gagal disimpan, suka dan ikuti dibatalkan di layar dan muncul toast, riwayat bersifat terbaik-upaya. Tamu menyimpan riwayat cari dan putar di localStorage; saat masuk digabung ke akun lalu dihapus. Keluar atau berganti akun mengosongkan koleksi di klien.
+- **Urutan tugas dibalik:** P3-07 dikerjakan lebih dulu karena `likes`, `follows`, dan `history` mereferensikan `tracks`/`artists`, dan klien tidak boleh menulis tabel itu. Route `POST /api/library/ensure` (hanya pengguna masuk, maks 20 id) mengambil metadata lagu dari adapter lalu menyalinnya dengan kunci service_role. **Wajib mengisi `SUPABASE_SERVICE_ROLE_KEY` di `.env.local`** (server saja); tanpanya route membalas 503 dan suka/ikuti/riwayat gagal dengan toast.
+- **Riwayat putar ikut menyalin metadata** lagu ke `tracks` (satu baris per lagu, dipakai bersama semua pengguna), bukan hanya saat suka atau masuk playlist seperti tertulis di PRD, supaya riwayat sinkron antar perangkat.
+- Lagu contoh (mode contoh) tidak pernah disimpan. Playlist (P3-05), pengaturan (P3-06), dan profil (P3-08) masih lokal.
+
+Daftar periksa manual (P3-04): (1) Masuk, sukai lagu Jamendo dan lagu Deezer: baris muncul di tabel `likes` dan `tracks` (Table Editor), `tracks.like_count` bertambah. (2) Muat ulang dan buka di peramban/perangkat lain: Koleksi, Disukai tetap ada. (3) Ikuti artis: baris di `follows`; tab Artis menampilkannya. (4) Putar beberapa lagu: Profil, Terakhir diputar sama di perangkat lain; lagu yang sama tidak muncul dua kali. (5) Cari beberapa kata: riwayat cari sama di perangkat lain, maks 6. (6) Sebagai tamu cari dan putar, lalu masuk: riwayat pindah ke akun dan `localStorage.zm-guest` hilang. (7) Matikan jaringan lalu sukai lagu: suka dibatalkan dan ada toast. (8) Bila Console menampilkan galat PostgREST "Could not find a relationship" saat memuat koleksi, kirim galatnya (kueri `tracks(...)` bergantung pada deteksi relasi).
+
 ## Siapa boleh apa
 
 | Tabel | Membaca | Menulis |

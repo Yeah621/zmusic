@@ -3,6 +3,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { toggleLikeWithToast, toggleMuteWithToast } from '@/lib/actions';
 import { getAuthPort } from '@/lib/auth/port';
+import { bindLibrary } from '@/lib/library/session';
 import { setNavigator } from '@/lib/navigate';
 import { registerMediaSession, setMediaMetadata, setPlaybackState } from '@/lib/media-session';
 import { dataMode } from '@/lib/data/mode';
@@ -37,12 +38,16 @@ export function ShellEffects() {
 
   // Status masuk: port auth memberi pengguna saat ini dan tiap perubahannya. Tanpa port (Supabase belum dikonfigurasi) = tamu.
   useEffect(() => {
+    const apply = (u: Parameters<ReturnType<typeof useLibraryStore.getState>['setUser']>[0]) => {
+      useLibraryStore.getState().setUser(u);
+      bindLibrary(u);
+    };
     const port = getAuthPort();
     if (!port) {
-      useLibraryStore.getState().setUser(null);
+      apply(null);
       return;
     }
-    return port.watch((u) => useLibraryStore.getState().setUser(u));
+    return port.watch(apply);
   }, []);
 
   // Jam simulasi Fase 1 (diganti AudioEngine di P2-01)
