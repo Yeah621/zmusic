@@ -200,7 +200,7 @@ describe('pemindai rahasia (G2)', () => {
   it('menemukan nilai dan nama variabel rahasia di bundel', () => {
     const dir = mkdtempSync(join(tmpdir(), 'zm-secret-'));
     writeFileSync(join(dir, 'a.js'), 'console.log("halo")');
-    const run = () => spawnSync('node', ['scripts/check-secrets.mjs', dir], { env: { JAMENDO_CLIENT_ID: 'abcdef123456', PATH: process.env.PATH ?? '' }, encoding: 'utf8' });
+    const run = () => spawnSync('node', ['scripts/check-secrets.mjs', dir], { env: { NODE_ENV: 'test', JAMENDO_CLIENT_ID: 'abcdef123456', PATH: process.env.PATH ?? '' }, encoding: 'utf8' });
     expect(run().status).toBe(0);
     writeFileSync(join(dir, 'b.js'), 'var x="abcdef123456"');
     expect(run().status).toBe(1);
